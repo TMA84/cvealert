@@ -128,6 +128,7 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .badge-exploited { background: rgba(239,68,68,.2); color: #ef4444; border: 1px solid rgba(239,68,68,.4); }
 .badge-source { background: rgba(14,165,233,.1); color: #0ea5e9; border: 1px solid rgba(14,165,233,.25); }
 .badge-new { background: rgba(16,185,129,.15); color: #10b981; border: 1px solid rgba(16,185,129,.3); animation: pulse 2s ease-in-out infinite; }
+.badge-digest { background: rgba(168,85,247,.12); color: #a855f7; border: 1px solid rgba(168,85,247,.3); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
 .cve-date { color: var(--text2); font-size: .8rem; margin-left: auto; }
 .cve-desc { color: var(--text2); font-size: .875rem; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
