@@ -61,7 +61,7 @@
     const nb=document.getElementById('notify-btn');
     if('serviceWorker' in navigator && 'Notification' in window){
       const swUrl='{{ "sw.js" | absURL }}';
-      const swScope='{{ "/" | absURL }}';
+      const swScope=swUrl.replace('sw.js','');
       navigator.serviceWorker.register(swUrl,{scope:swScope}).then(()=>{
         console.log('SW registered');
         updateBtn();
