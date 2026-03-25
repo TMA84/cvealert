@@ -56,9 +56,8 @@ def fetch_cert_bund():
             for de, (en, score) in sev_map.items():
                 if f"[{de}]" in clean_title.lower():
                     severity, cvss = en, score
-                    # Remove severity tag (case-insensitive)
                     import re
-                    clean_title = re.sub(r'\[(?i)' + de + r'\]', '', clean_title)
+                    clean_title = re.sub(r'\[' + de + r'\]', '', clean_title, flags=re.IGNORECASE)
                     break
             clean_title = clean_title.strip().strip("-").strip()
             if is_update:
