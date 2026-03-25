@@ -59,18 +59,39 @@
     if(s==='light'){document.body.classList.add('light');t.textContent='☀️'}
     t.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');t.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark')});
     const nb=document.getElementById('notify-btn');
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('{{ "sw.js" | relURL }}');
-      if(Notification.permission==='granted'){nb.textContent='🔔✓';startChecks()}
+    if('serviceWorker' in navigator && 'Notification' in window){
+      const swUrl='{{ "sw.js" | absURL }}';
+      navigator.serviceWorker.register(swUrl,{scope:'{{ "/" | absURL }}'}).then(()=>{
+        console.log('SW registered');
+        updateBtn();
+      }).catch(e=>console.error('SW failed:',e));
+
       nb.addEventListener('click',async()=>{
-        const p=await Notification.requestPermission();
-        if(p==='granted'){nb.textContent='🔔✓';startChecks()}
+        if(Notification.permission==='granted'){
+          // Already enabled - disable by unregistering
+          const reg=await navigator.serviceWorker.getRegistration();
+          if(reg)await reg.unregister();
+          nb.textContent='🔔';nb.title='Enable notifications';
+        } else {
+          const p=await Notification.requestPermission();
+          if(p==='granted'){
+            await navigator.serviceWorker.register(swUrl,{scope:'{{ "/" | absURL }}'});
+            updateBtn();startChecks();
+          }
+        }
       });
+
+      function updateBtn(){
+        if(Notification.permission==='granted'){
+          nb.textContent='🔔✓';nb.title='Notifications enabled (click to disable)';
+          startChecks();
+        }
+      }
       function startChecks(){
         check();setInterval(check,30*60*1000);
       }
       function check(){
-        navigator.serviceWorker.ready.then(r=>r.active.postMessage('check'));
+        navigator.serviceWorker.ready.then(r=>{if(r.active)r.active.postMessage('check')});
       }
     } else {nb.style.display='none'}
   </script>
