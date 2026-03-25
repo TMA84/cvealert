@@ -1,5 +1,5 @@
 {{ define "main" }}
-<a href="{{ "/" | absURL }}" class="back-link">← Back to all CVEs</a>
+<a href="{{ .Site.BaseURL }}" class="back-link">← Back to all CVEs</a>
 <div class="single-content">
   <div class="cve-header" style="margin-bottom:1rem">
     <span class="cve-id" style="font-size:1.4rem">{{ .Title }}</span>
