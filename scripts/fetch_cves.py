@@ -21,6 +21,7 @@ def make_post(cve):
     cve_id = cve["cve"]["id"]
     desc_list = cve["cve"].get("descriptions", [])
     desc = next((d["value"] for d in desc_list if d["lang"] == "en"), "No description.")
+    desc = desc.replace("{{", "{ {").replace("}}", "} }")
     metrics = cve["cve"].get("metrics", {})
     cvss = 0.0
     severity = "UNKNOWN"
