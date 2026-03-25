@@ -5,20 +5,20 @@ layout: "single"
 
 ## Angaben gemäß § 5 DDG
 
-<Vorname Nachname>
-<Straße Hausnummer>
-<PLZ Ort>
-<Land>
+Tobias Malcherek
+Gutenbergstraße 15
+65468 Trebur
+Deutschland
 
 ## Kontakt
 
-E-Mail: <email@example.com>
+E-Mail: email@cvealert.net
 
 ## Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
 
-<Vorname Nachname>
-<Straße Hausnummer>
-<PLZ Ort>
+Tobias Malcherek
+Gutenbergstraße 15
+65468 Trebur
 
 ## Haftungsausschluss
 

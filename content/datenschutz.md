@@ -5,10 +5,10 @@ layout: "single"
 
 ## 1. Verantwortlicher
 
-<Vorname Nachname>
-<Straße Hausnummer>
-<PLZ Ort>
-E-Mail: <email@example.com>
+Tobias Malcherek
+Gutenbergstraße 15
+65468 Trebur
+E-Mail: email@cvealert.net
 
 ## 2. Hosting
 

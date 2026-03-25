@@ -1,4 +1,4 @@
-baseURL = "https://cvealert.net/"
+baseURL = "https://TMA84.github.io/cvealert/"
 languageCode = "en-us"
 title = "CVE Security Feed"
 description = "Daily automated feed of high and critical CVE vulnerabilities from the National Vulnerability Database (NVD)."
