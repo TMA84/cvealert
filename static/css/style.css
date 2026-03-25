@@ -29,3 +29,5 @@ body.light time { color: #656d76; }
 body.light #filters input, body.light #filters select { background: #f6f8fa; color: #1f2328; border-color: #d1d9e0; }
 body.light #theme-toggle { border-color: #d1d9e0; }
 body.light #count { color: #656d76; }
+footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #30363d; text-align: center; font-size: .85rem; color: #8b949e; }
+body.light footer { border-color: #d1d9e0; }

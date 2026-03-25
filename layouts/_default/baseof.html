@@ -47,6 +47,9 @@
     <p>{{ .Site.Params.description }}</p>
   </header>
   <main>{{ block "main" . }}{{ end }}</main>
+  <footer>
+    <a href="{{ "impressum/" | relURL }}">Impressum</a> · <a href="{{ "datenschutz/" | relURL }}">Datenschutz</a>
+  </footer>
   <script>
     const t = document.getElementById('theme-toggle');
     const saved = localStorage.getItem('theme');
