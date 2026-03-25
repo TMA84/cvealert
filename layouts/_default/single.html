@@ -11,6 +11,7 @@
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>
   {{ .Content }}
+  {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
   {{ with .Params.references }}
   <h3>References</h3>
   <ul>{{ range . }}<li><a href="{{ . }}">{{ . }}</a></li>{{ end }}</ul>

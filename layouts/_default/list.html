@@ -55,7 +55,7 @@
     {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>
-  <p class="cve-desc">{{ .Summary | plainify | htmlUnescape }}</p>
+  <p class="cve-desc">{{ .Params.summary }}</p>
 </article>
 {{ end }}
 </div>

@@ -8,6 +8,15 @@ enableRobotsTXT = true
 [markup.goldmark.renderer]
   unsafe = true
 
+[security.funcs]
+  getenv = ["^$"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+
 [outputs]
   home = ["HTML", "RSS"]
 
