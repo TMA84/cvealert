@@ -94,16 +94,18 @@
 <script>
 const $=s=>document.querySelector(s),posts=[...document.querySelectorAll('.cve-card')],container=$('#posts');
 const fields=['search','severity','vendor','source','date-from','date-to','sort'];
+const STORE_KEY='cvealert-filters';
 
 function saveState(){
-  const p=new URLSearchParams();
-  fields.forEach(id=>{const v=document.getElementById(id).value;if(v)p.set(id,v)});
-  const qs=p.toString();
-  history.replaceState(null,'',qs?'?'+qs:location.pathname);
+  const state={};
+  fields.forEach(id=>{const v=document.getElementById(id).value;if(v)state[id]=v});
+  sessionStorage.setItem(STORE_KEY,JSON.stringify(state));
 }
 function loadState(){
-  const p=new URLSearchParams(location.search);
-  fields.forEach(id=>{const v=p.get(id);if(v)document.getElementById(id).value=v});
+  try{
+    const state=JSON.parse(sessionStorage.getItem(STORE_KEY)||'{}');
+    fields.forEach(id=>{if(state[id])document.getElementById(id).value=state[id]});
+  }catch(e){}
 }
 
 function filter(){const q=$('#search').value.toLowerCase(),sev=$('#severity').value,ven=$('#vendor').value,src=$('#source').value,from=$('#date-from').value,to=$('#date-to').value;let n=0;posts.forEach(p=>{const text=p.dataset.text+' '+p.textContent.toLowerCase();const show=(!q||text.includes(q))&&(!sev||p.dataset.severity===sev)&&(!ven||p.dataset.vendor.split(', ').includes(ven))&&(!src||p.dataset.source.split(',').includes(src))&&(!from||p.dataset.date>=from)&&(!to||p.dataset.date<=to);p.style.display=show?'':'none';if(show)n++});$('#count').textContent=n+' CVEs';saveState()}
