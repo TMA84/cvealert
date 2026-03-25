@@ -50,7 +50,7 @@ def fetch_cert_bund():
 
 
 def safe_yaml(text):
-    return text.replace("{{", "{ {").replace("}}", "} }").replace("\n", "\n  ")
+    return text.replace("{{", "{ {").replace("}}", "} }").replace("\n", " ").replace("\r", "")
 
 
 def write_post(path, frontmatter):
