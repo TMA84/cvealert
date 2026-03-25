@@ -24,29 +24,34 @@
   </div>
   <div class="filter-row">
     <div class="filter-group">
-      <label for="severity">Severity</label>
-      <select id="severity">
-        <option value="">All</option>
-        <option value="CRITICAL">Critical</option>
-        <option value="HIGH">High</option>
-        <option value="MEDIUM">Medium</option>
-        <option value="LOW">Low</option>
-      </select>
+      <label>Severity</label>
+      <div class="multi-select" id="severity-ms" data-filter="severity">
+        <button class="ms-toggle" type="button">All</button>
+        <div class="ms-dropdown">
+          <label><input type="checkbox" value="CRITICAL"> Critical</label>
+          <label><input type="checkbox" value="HIGH"> High</label>
+          <label><input type="checkbox" value="MEDIUM"> Medium</label>
+          <label><input type="checkbox" value="LOW"> Low</label>
+        </div>
+      </div>
     </div>
     <div class="filter-group">
-      <label for="vendor">Vendor</label>
-      <select id="vendor">
-        <option value="">All</option>
-      </select>
+      <label>Vendor</label>
+      <div class="multi-select" id="vendor-ms" data-filter="vendor">
+        <button class="ms-toggle" type="button">All</button>
+        <div class="ms-dropdown" id="vendor-options"></div>
+      </div>
     </div>
     <div class="filter-group">
-      <label for="source">Source</label>
-      <select id="source">
-        <option value="">All</option>
-        <option value="NVD">NVD</option>
-        <option value="CISA KEV">CISA KEV</option>
-        <option value="CERT-Bund">CERT-Bund</option>
-      </select>
+      <label>Source</label>
+      <div class="multi-select" id="source-ms" data-filter="source">
+        <button class="ms-toggle" type="button">All</button>
+        <div class="ms-dropdown">
+          <label><input type="checkbox" value="NVD"> NVD</label>
+          <label><input type="checkbox" value="CISA KEV"> CISA KEV</label>
+          <label><input type="checkbox" value="CERT-Bund"> CERT-Bund</label>
+        </div>
+      </div>
     </div>
     <div class="filter-group">
       <label for="newonly">Status</label>
@@ -103,27 +108,59 @@
 
 <script>
 const $=s=>document.querySelector(s),posts=[...document.querySelectorAll('.cve-card')],container=$('#posts');
-const fields=['search','severity','vendor','source','newonly','date-from','date-to','sort'];
+const fields=['search','newonly','date-from','date-to','sort'];
 const STORE_KEY='cvealert-filters';
+
+function getChecked(id){return[...document.querySelectorAll('#'+id+' input:checked')].map(c=>c.value)}
+function setChecked(id,vals){document.querySelectorAll('#'+id+' input').forEach(c=>{c.checked=vals.includes(c.value)})}
+function updateToggle(el){const checked=getChecked(el.id);el.querySelector('.ms-toggle').textContent=checked.length?checked.join(', '):'All'}
 
 function saveState(){
   const state={};
   fields.forEach(id=>{const v=document.getElementById(id).value;if(v)state[id]=v});
+  ['severity-ms','vendor-ms','source-ms'].forEach(id=>{const v=getChecked(id);if(v.length)state[id]=v});
   sessionStorage.setItem(STORE_KEY,JSON.stringify(state));
 }
 function loadState(){
   try{
     const state=JSON.parse(sessionStorage.getItem(STORE_KEY)||'{}');
     fields.forEach(id=>{if(state[id])document.getElementById(id).value=state[id]});
+    ['severity-ms','vendor-ms','source-ms'].forEach(id=>{if(state[id]){setChecked(id,state[id]);updateToggle(document.getElementById(id))}});
   }catch(e){}
 }
 
-function filter(){const q=$('#search').value.toLowerCase(),sev=$('#severity').value,ven=$('#vendor').value,src=$('#source').value,nw=$('#newonly').value,from=$('#date-from').value,to=$('#date-to').value;let n=0;posts.forEach(p=>{const text=p.dataset.text+' '+p.textContent.toLowerCase();const show=(!q||text.includes(q))&&(!sev||p.dataset.severity===sev)&&(!ven||p.dataset.vendor.split(', ').includes(ven))&&(!src||p.dataset.source.split(',').includes(src))&&(!nw||p.dataset.new==='true')&&(!from||p.dataset.date>=from)&&(!to||p.dataset.date<=to);p.style.display=show?'':'none';if(show)n++});$('#count').textContent=n+' CVEs';saveState()}
+function filter(){
+  const q=$('#search').value.toLowerCase();
+  const sevs=getChecked('severity-ms'),vens=getChecked('vendor-ms'),srcs=getChecked('source-ms');
+  const nw=$('#newonly').value,from=$('#date-from').value,to=$('#date-to').value;
+  let n=0;
+  posts.forEach(p=>{
+    const text=p.dataset.text+' '+p.textContent.toLowerCase();
+    const show=(!q||text.includes(q))
+      &&(!sevs.length||sevs.includes(p.dataset.severity))
+      &&(!vens.length||vens.some(v=>p.dataset.vendor.split(', ').includes(v)))
+      &&(!srcs.length||srcs.some(s=>p.dataset.source.split(',').includes(s)))
+      &&(!nw||p.dataset.new==='true')
+      &&(!from||p.dataset.date>=from)
+      &&(!to||p.dataset.date<=to);
+    p.style.display=show?'':'none';
+    if(show)n++;
+  });
+  $('#count').textContent=n+' CVEs';saveState();
+}
 function sort(){const[key,dir]=$('#sort').value.split('-');[...posts].sort((a,b)=>{const va=key==='cvss'?parseFloat(a.dataset.cvss):a.dataset.date,vb=key==='cvss'?parseFloat(b.dataset.cvss):b.dataset.date;return dir==='desc'?(vb>va?1:-1):(va>vb?1:-1)}).forEach(p=>container.appendChild(p))}
 $('#export').addEventListener('click',()=>{const v=posts.filter(p=>p.style.display!=='none'),rows=[['CVE','Date','Severity','CVSS','Vendor','Sources']];v.forEach(p=>rows.push([p.dataset.title,p.dataset.date,p.dataset.severity,p.dataset.cvss,p.dataset.vendor,p.dataset.source]));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='cves-'+new Date().toISOString().slice(0,10)+'.csv';a.click()});
-['search','severity','vendor','source','newonly','date-from','date-to'].forEach(id=>document.getElementById(id).addEventListener('input',filter));
+['search','newonly','date-from','date-to'].forEach(id=>document.getElementById(id).addEventListener('input',filter));
 $('#sort').addEventListener('change',()=>{sort();filter()});
-const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(v&&v!=='unknown')vs.add(v)}));[...vs].sort().forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;$('#vendor').appendChild(o)});
+document.querySelectorAll('.multi-select').forEach(ms=>{
+  ms.querySelector('.ms-toggle').addEventListener('click',()=>ms.classList.toggle('open'));
+  ms.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(ms);filter()}));
+});
+document.addEventListener('click',e=>{document.querySelectorAll('.multi-select.open').forEach(ms=>{if(!ms.contains(e.target))ms.classList.remove('open')})});
+const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(v&&v!=='unknown')vs.add(v)}));
+const vOpts=document.getElementById('vendor-options');
+[...vs].sort().forEach(v=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+v+'"> '+v;vOpts.appendChild(l)});
+document.querySelectorAll('#vendor-ms input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(document.getElementById('vendor-ms'));filter()}));
 loadState();sort();filter();
 </script>
 {{ end }}
