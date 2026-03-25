@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article>
+  <h2>{{ .Title }}</h2>
+  <time>{{ .Date.Format "2006-01-02" }}</time>
+  <span class="severity">CVSS: {{ .Params.cvss }} ({{ .Params.severity }})</span>
+  {{ .Content }}
+  {{ with .Params.references }}
+  <h3>References</h3>
+  <ul>{{ range . }}<li><a href="{{ . }}">{{ . }}</a></li>{{ end }}</ul>
+  {{ end }}
+</article>
+{{ end }}

@@ -1,0 +1,20 @@
+baseURL = "https://cvealert.net/"
+languageCode = "en-us"
+title = "CVE Security Feed"
+description = "Daily automated feed of high and critical CVE vulnerabilities from the National Vulnerability Database (NVD)."
+paginate = 20
+enableRobotsTXT = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+[sitemap]
+  changefreq = "daily"
+  priority = 0.5
+
+[params]
+  author = "CVE Security Feed"
+  keywords = "CVE, vulnerability, cybersecurity, NVD, security advisory, CVSS"
