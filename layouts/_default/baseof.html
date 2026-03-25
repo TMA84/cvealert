@@ -59,7 +59,20 @@
     if(s==='light'){document.body.classList.add('light');t.textContent='☀️'}
     t.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');t.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark')});
     const nb=document.getElementById('notify-btn');
-    if('Notification' in window){if(Notification.permission==='granted')nb.textContent='🔔✓';nb.addEventListener('click',async()=>{const p=await Notification.requestPermission();if(p==='granted')nb.textContent='🔔✓'})}
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('{{ "sw.js" | relURL }}');
+      if(Notification.permission==='granted'){nb.textContent='🔔✓';startChecks()}
+      nb.addEventListener('click',async()=>{
+        const p=await Notification.requestPermission();
+        if(p==='granted'){nb.textContent='🔔✓';startChecks()}
+      });
+      function startChecks(){
+        check();setInterval(check,30*60*1000);
+      }
+      function check(){
+        navigator.serviceWorker.ready.then(r=>r.active.postMessage('check'));
+      }
+    } else {nb.style.display='none'}
   </script>
 </body>
 </html>
