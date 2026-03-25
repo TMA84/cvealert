@@ -79,7 +79,7 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .ms-toggle:hover, .multi-select.open .ms-toggle { border-color: var(--accent); }
 .ms-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; min-width: 100%; max-height: 240px; overflow-y: auto; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .5rem; z-index: 20; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
 .multi-select.open .ms-dropdown { display: block; }
-.ms-dropdown label { display: flex; align-items: center; gap: .5rem; padding: .35rem .5rem; border-radius: 4px; cursor: pointer; font-size: .85rem; color: var(--text); white-space: nowrap; }
+.ms-dropdown label { display: flex; align-items: center; justify-content: space-between; flex-direction: row-reverse; gap: .5rem; padding: .35rem .5rem; border-radius: 4px; cursor: pointer; font-size: .85rem; color: var(--text); white-space: nowrap; }
 .ms-dropdown label:hover { background: var(--bg3); }
 .ms-dropdown input[type="checkbox"] { accent-color: var(--accent); }
 .btn { border: none; border-radius: 8px; padding: .5rem 1rem; font-size: .875rem; font-family: inherit; cursor: pointer; font-weight: 500; transition: all .15s; }
