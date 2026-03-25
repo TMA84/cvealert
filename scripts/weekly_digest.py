@@ -34,6 +34,8 @@ def main():
         date_str = date_line[0].replace("date:", "").strip()
         try:
             dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
         except Exception:
             continue
         if dt < start or dt > end:
