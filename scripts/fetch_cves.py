@@ -27,6 +27,13 @@ def fetch_kev():
 
 def fetch_cert_bund():
     """Fetch CERT-Bund advisories from RSS and return list of dicts."""
+    # Map German severity tags to English
+    sev_map = {
+        "kritisch": ("CRITICAL", 9.0),
+        "hoch": ("HIGH", 7.5),
+        "mittel": ("MEDIUM", 5.0),
+        "niedrig": ("LOW", 2.5),
+    }
     advisories = []
     try:
         root = ET.fromstring(http_get(CERT_BUND_RSS))
@@ -37,13 +44,35 @@ def fetch_cert_bund():
             pub = item.findtext("pubDate", "")
             if not title:
                 continue
-            # Parse date like "Thu, 20 Mar 2026 10:00:00 +0100"
+            # Extract severity and status from title like "[NEU] [hoch] Product: ..."
+            severity, cvss = "UNKNOWN", 0.0
+            is_update = False
+            clean_title = title
+            for tag in ("NEU", "UPDATE"):
+                if f"[{tag}]" in title:
+                    if tag == "UPDATE":
+                        is_update = True
+                    clean_title = clean_title.replace(f"[{tag}]", "")
+            for de, (en, score) in sev_map.items():
+                if f"[{de}]" in clean_title.lower():
+                    severity, cvss = en, score
+                    # Remove severity tag (case-insensitive)
+                    import re
+                    clean_title = re.sub(r'\[(?i)' + de + r'\]', '', clean_title)
+                    break
+            clean_title = clean_title.strip().strip("-").strip()
+            if is_update:
+                clean_title = "[Update] " + clean_title
+
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")
                 date_str = dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
             except Exception:
                 date_str = datetime.now(timezone.utc).isoformat()
-            advisories.append({"title": title, "link": link, "desc": desc, "date": date_str})
+            advisories.append({
+                "title": clean_title, "link": link, "desc": desc,
+                "date": date_str, "severity": severity, "cvss": cvss,
+            })
     except Exception as e:
         print(f"CERT-Bund fetch failed: {e}")
     return advisories
@@ -135,9 +164,11 @@ def process_cert_bund(advisories):
         slug = f"cb-{slug}"
         desc = safe_yaml(adv["desc"]) if adv["desc"] else "No description available."
         title = adv["title"].replace('"', '\\"')
+        severity = adv.get("severity", "UNKNOWN")
+        cvss = adv.get("cvss", 0.0)
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
-            f'cvss: 0.0\nseverity: "UNKNOWN"\nvendor: "unknown"\n'
+            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "unknown"\n'
             f'exploited: false\n'
             f'sources: ["CERT-Bund"]\n'
             f'description: "{title}"\n'
