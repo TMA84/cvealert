@@ -89,7 +89,10 @@ def fetch_nvd(kev_ids):
                     cvss = m.get("baseScore", 0.0)
                     severity = m.get("baseSeverity", "UNKNOWN")
                     break
-            refs = [r["url"] for r in cve.get("references", [])[:5]]
+            all_refs = cve.get("references", [])
+            refs = [r["url"] for r in all_refs[:5]]
+            patches = [r["url"] for r in all_refs if "Patch" in r.get("tags", [])][:3]
+            advisories = [r["url"] for r in all_refs if "Vendor Advisory" in r.get("tags", [])][:3]
             vendors = set()
             for conf in cve.get("configurations", []):
                 for node in conf.get("nodes", []):
@@ -110,6 +113,8 @@ def fetch_nvd(kev_ids):
                 f'sources: {json.dumps(sources)}\n'
                 f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
                 f'summary: |\n  {safe_yaml(desc)}\n'
+                f'patches: {json.dumps(patches)}\n'
+                f'advisories: {json.dumps(advisories)}\n'
                 f'references: {json.dumps(refs)}\n---\n'
             )
             if write_post(os.path.join(OUT, f"{cve_id.lower()}.md"), front):

@@ -40,6 +40,20 @@
   {{ .Content }}
   {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
 
+  {{ with .Params.patches }}
+  <div class="alert alert-patch">
+    <h3>🩹 Available Patches</h3>
+    <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+  </div>
+  {{ end }}
+
+  {{ with .Params.advisories }}
+  <div class="alert alert-advisory">
+    <h3>📋 Vendor Advisories</h3>
+    <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+  </div>
+  {{ end }}
+
   {{ with .Params.references }}
   <h3>References</h3>
   <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
