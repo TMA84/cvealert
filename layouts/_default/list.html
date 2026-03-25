@@ -18,34 +18,57 @@
 </div>
 
 <div class="filters">
-  <input type="text" id="search" placeholder="Search CVE ID, description, vendor..." aria-label="Search">
-  <select id="severity" aria-label="Severity">
-    <option value="">All Severities</option>
-    <option value="CRITICAL">Critical</option>
-    <option value="HIGH">High</option>
-    <option value="MEDIUM">Medium</option>
-    <option value="LOW">Low</option>
-  </select>
-  <select id="vendor" aria-label="Vendor">
-    <option value="">All Vendors</option>
-  </select>
-  <select id="source" aria-label="Source">
-    <option value="">All Sources</option>
-    <option value="NVD">NVD</option>
-    <option value="CISA KEV">CISA KEV</option>
-    <option value="CERT-Bund">CERT-Bund</option>
-  </select>
-  <input type="date" id="date-from" aria-label="From">
-  <input type="date" id="date-to" aria-label="To">
-  <select id="sort" aria-label="Sort">
-    <option value="date-desc">Newest</option>
-    <option value="date-asc">Oldest</option>
-    <option value="cvss-desc">CVSS ↓</option>
-    <option value="cvss-asc">CVSS ↑</option>
-  </select>
-  <div class="filter-actions">
-    <button class="btn btn-secondary" id="export">⬇ CSV</button>
+  <div class="filter-row filter-search">
+    <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/></svg>
+    <input type="text" id="search" placeholder="Search CVE ID, description, vendor..." aria-label="Search">
+  </div>
+  <div class="filter-row">
+    <div class="filter-group">
+      <label for="severity">Severity</label>
+      <select id="severity">
+        <option value="">All</option>
+        <option value="CRITICAL">Critical</option>
+        <option value="HIGH">High</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="LOW">Low</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="vendor">Vendor</label>
+      <select id="vendor">
+        <option value="">All</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="source">Source</label>
+      <select id="source">
+        <option value="">All</option>
+        <option value="NVD">NVD</option>
+        <option value="CISA KEV">CISA KEV</option>
+        <option value="CERT-Bund">CERT-Bund</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="date-from">From</label>
+      <input type="date" id="date-from">
+    </div>
+    <div class="filter-group">
+      <label for="date-to">To</label>
+      <input type="date" id="date-to">
+    </div>
+    <div class="filter-group">
+      <label for="sort">Sort</label>
+      <select id="sort">
+        <option value="date-desc">Newest</option>
+        <option value="date-asc">Oldest</option>
+        <option value="cvss-desc">CVSS ↓</option>
+        <option value="cvss-asc">CVSS ↑</option>
+      </select>
+    </div>
+  </div>
+  <div class="filter-row filter-bottom">
     <span class="result-count" id="count"></span>
+    <button class="btn btn-secondary" id="export">⬇ Export CSV</button>
   </div>
 </div>
 
