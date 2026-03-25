@@ -1,123 +1,65 @@
 {{ define "main" }}
-<div id="filters">
-  <input type="text" id="search" placeholder="Search CVE ID or description..." aria-label="Search CVEs">
-  <select id="severity" aria-label="Filter by severity">
+
+{{ $posts := where .Site.RegularPages "Section" "posts" }}
+{{ $critical := 0 }}{{ $high := 0 }}
+{{ range $posts }}
+  {{ if eq .Params.severity "CRITICAL" }}{{ $critical = add $critical 1 }}{{ end }}
+  {{ if eq .Params.severity "HIGH" }}{{ $high = add $high 1 }}{{ end }}
+{{ end }}
+
+<div class="stats">
+  <div class="stat"><div class="stat-value">{{ len $posts }}</div><div class="stat-label">Total CVEs</div></div>
+  <div class="stat"><div class="stat-value critical">{{ $critical }}</div><div class="stat-label">Critical</div></div>
+  <div class="stat"><div class="stat-value high">{{ $high }}</div><div class="stat-label">High</div></div>
+</div>
+
+<div class="filters">
+  <input type="text" id="search" placeholder="Search CVE ID, description, vendor..." aria-label="Search">
+  <select id="severity" aria-label="Severity">
     <option value="">All Severities</option>
     <option value="CRITICAL">Critical</option>
     <option value="HIGH">High</option>
   </select>
-  <select id="vendor" aria-label="Filter by vendor">
+  <select id="vendor" aria-label="Vendor">
     <option value="">All Vendors</option>
   </select>
-  <input type="date" id="date-from" aria-label="From date">
-  <input type="date" id="date-to" aria-label="To date">
-  <select id="sort" aria-label="Sort by">
-    <option value="date-desc">Newest first</option>
-    <option value="date-asc">Oldest first</option>
+  <input type="date" id="date-from" aria-label="From">
+  <input type="date" id="date-to" aria-label="To">
+  <select id="sort" aria-label="Sort">
+    <option value="date-desc">Newest</option>
+    <option value="date-asc">Oldest</option>
     <option value="cvss-desc">CVSS ↓</option>
     <option value="cvss-asc">CVSS ↑</option>
   </select>
-  <button id="export" title="Export visible CVEs as CSV">⬇ CSV</button>
-  <button id="notify-btn" title="Enable browser notifications for new CVEs">🔔 Notify</button>
-  <span id="count"></span>
+  <div class="filter-actions">
+    <button class="btn btn-secondary" id="export">⬇ CSV</button>
+    <span class="result-count" id="count"></span>
+  </div>
 </div>
 
-<div id="posts">
-{{ range .Site.RegularPages }}
-{{ if eq .Section "posts" }}
-<article data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-text="{{ .Title }} {{ .Summary | plainify | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
-  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-  <time>{{ .Date.Format "2006-01-02" }}</time>
-  <span class="severity {{ .Params.severity | lower }}">{{ .Params.severity }} ({{ .Params.cvss }})</span>
-  <span class="vendor">{{ .Params.vendor | default "unknown" }}</span>
-  <p>{{ .Summary }}</p>
+<div class="cve-list" id="posts">
+{{ range $posts }}
+<article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-text="{{ .Title }} {{ .Summary | plainify | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
+  <div class="cve-header">
+    <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
+    {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
+    {{ else }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>{{ end }}
+    {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+    <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
+  </div>
+  <p class="cve-desc">{{ .Summary | plainify }}</p>
 </article>
-{{ end }}
 {{ end }}
 </div>
 
 <script>
-const $ = s => document.querySelector(s);
-const posts = [...document.querySelectorAll('#posts article')];
-const container = $('#posts');
-
-function filter() {
-  const q = $('#search').value.toLowerCase();
-  const sev = $('#severity').value;
-  const ven = $('#vendor').value;
-  const from = $('#date-from').value;
-  const to = $('#date-to').value;
-  let n = 0;
-  posts.forEach(p => {
-    const show =
-      (!q || p.dataset.text.includes(q)) &&
-      (!sev || p.dataset.severity === sev) &&
-      (!ven || p.dataset.vendor.split(', ').includes(ven)) &&
-      (!from || p.dataset.date >= from) &&
-      (!to || p.dataset.date <= to);
-    p.style.display = show ? '' : 'none';
-    if (show) n++;
-  });
-  $('#count').textContent = n + ' CVEs';
-}
-
-function sort() {
-  const [key, dir] = $('#sort').value.split('-');
-  const sorted = [...posts].sort((a, b) => {
-    const va = key === 'cvss' ? parseFloat(a.dataset.cvss) : a.dataset.date;
-    const vb = key === 'cvss' ? parseFloat(b.dataset.cvss) : b.dataset.date;
-    return dir === 'desc' ? (vb > va ? 1 : -1) : (va > vb ? 1 : -1);
-  });
-  sorted.forEach(p => container.appendChild(p));
-}
-
-function exportCSV() {
-  const visible = posts.filter(p => p.style.display !== 'none');
-  const rows = [['CVE', 'Date', 'Severity', 'CVSS', 'Vendor']];
-  visible.forEach(p => rows.push([p.dataset.title, p.dataset.date, p.dataset.severity, p.dataset.cvss, p.dataset.vendor]));
-  const csv = rows.map(r => r.join(',')).join('\n');
-  const blob = new Blob([csv], {type: 'text/csv'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'cves-' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-}
-
-['search','severity','vendor','date-from','date-to'].forEach(id =>
-  document.getElementById(id).addEventListener('input', filter));
-
-// Populate vendor dropdown dynamically
-const vendorSet = new Set();
-posts.forEach(p => p.dataset.vendor.split(', ').forEach(v => { if (v && v !== 'unknown') vendorSet.add(v); }));
-[...vendorSet].sort().forEach(v => {
-  const o = document.createElement('option'); o.value = v; o.textContent = v;
-  $('#vendor').appendChild(o);
-});
-$('#sort').addEventListener('change', () => { sort(); filter(); });
-$('#export').addEventListener('click', exportCSV);
-
-// Browser notifications
-const nb = $('#notify-btn');
-if ('Notification' in window) {
-  if (Notification.permission === 'granted') nb.textContent = '🔔 On';
-  nb.addEventListener('click', async () => {
-    const perm = await Notification.requestPermission();
-    if (perm === 'granted') {
-      nb.textContent = '🔔 On';
-      const latest = posts[0];
-      if (latest) {
-        const stored = localStorage.getItem('lastCVE');
-        if (stored !== latest.dataset.title) {
-          new Notification('New CVE: ' + latest.dataset.title, {
-            body: latest.dataset.severity + ' (CVSS ' + latest.dataset.cvss + ')',
-            icon: '/favicon.svg'
-          });
-          localStorage.setItem('lastCVE', latest.dataset.title);
-        }
-      }
-    }
-  });
-} else { nb.style.display = 'none'; }
+const $=s=>document.querySelector(s),posts=[...document.querySelectorAll('.cve-card')],container=$('#posts');
+function filter(){const q=$('#search').value.toLowerCase(),sev=$('#severity').value,ven=$('#vendor').value,from=$('#date-from').value,to=$('#date-to').value;let n=0;posts.forEach(p=>{const show=(!q||p.dataset.text.includes(q))&&(!sev||p.dataset.severity===sev)&&(!ven||p.dataset.vendor.split(', ').includes(ven))&&(!from||p.dataset.date>=from)&&(!to||p.dataset.date<=to);p.style.display=show?'':'none';if(show)n++});$('#count').textContent=n+' CVEs'}
+function sort(){const[key,dir]=$('#sort').value.split('-');[...posts].sort((a,b)=>{const va=key==='cvss'?parseFloat(a.dataset.cvss):a.dataset.date,vb=key==='cvss'?parseFloat(b.dataset.cvss):b.dataset.date;return dir==='desc'?(vb>va?1:-1):(va>vb?1:-1)}).forEach(p=>container.appendChild(p))}
+$('#export').addEventListener('click',()=>{const v=posts.filter(p=>p.style.display!=='none'),rows=[['CVE','Date','Severity','CVSS','Vendor']];v.forEach(p=>rows.push([p.dataset.title,p.dataset.date,p.dataset.severity,p.dataset.cvss,p.dataset.vendor]));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='cves-'+new Date().toISOString().slice(0,10)+'.csv';a.click()});
+['search','severity','vendor','date-from','date-to'].forEach(id=>document.getElementById(id).addEventListener('input',filter));
+$('#sort').addEventListener('change',()=>{sort();filter()});
+const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(v&&v!=='unknown')vs.add(v)}));[...vs].sort().forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;$('#vendor').appendChild(o)});
 filter();
 </script>
 {{ end }}

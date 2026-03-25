@@ -9,57 +9,56 @@
   <link rel="canonical" href="{{ .Permalink }}">
   <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
   <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | absURL }}">
-
-  {{/* Open Graph */}}
   <meta property="og:title" content="{{ .Title }}">
   <meta property="og:description" content="{{ if .IsPage }}{{ .Summary | plainify | truncate 200 }}{{ else }}{{ .Site.Params.description }}{{ end }}">
   <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
   <meta property="og:site_name" content="{{ .Site.Title }}">
-
-  {{/* Twitter */}}
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="{{ .Title }}">
   <meta name="twitter:description" content="{{ if .IsPage }}{{ .Summary | plainify | truncate 200 }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-
-  {{/* JSON-LD Structured Data */}}
   {{ if .IsPage }}
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ .Title }}",
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "description": "{{ .Summary | plainify | truncate 200 }}",
-    "mainEntityOfPage": "{{ .Permalink }}"
-  }
+  {"@context":"https://schema.org","@type":"Article","headline":"{{ .Title }}","datePublished":"{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}","description":"{{ .Summary | plainify | truncate 200 }}","mainEntityOfPage":"{{ .Permalink }}"}
   </script>
   {{ end }}
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
 </head>
 <body>
   <header>
-    <div class="header-row">
-      <h1><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></h1>
-      <button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle theme">🌙</button>
+    <div class="container">
+      <a href="{{ "/" | relURL }}" class="logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#3b82f6"/>
+          <path d="M8 16l4 4 8-8" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>{{ .Site.Title }}</span>
+      </a>
+      <div class="header-actions">
+        <button id="notify-btn" title="Enable notifications">🔔</button>
+        <button id="theme-toggle" title="Toggle theme">🌙</button>
+      </div>
     </div>
-    <p>{{ .Site.Params.description }}</p>
   </header>
-  <main>{{ block "main" . }}{{ end }}</main>
+
+  <div class="container">
+    <main>{{ block "main" . }}{{ end }}</main>
+  </div>
+
   <footer>
-    <a href="{{ "impressum/" | relURL }}">Impressum</a> · <a href="{{ "datenschutz/" | relURL }}">Datenschutz</a>
+    <div class="container">
+      <a href="{{ "impressum/" | relURL }}">Impressum</a> · <a href="{{ "datenschutz/" | relURL }}">Datenschutz</a> · <a href="{{ "index.xml" | relURL }}">RSS</a>
+    </div>
   </footer>
+
   <script>
-    const t = document.getElementById('theme-toggle');
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') { document.body.classList.add('light'); t.textContent = '☀️'; }
-    t.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      const isLight = document.body.classList.contains('light');
-      t.textContent = isLight ? '☀️' : '🌙';
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    });
+    const t=document.getElementById('theme-toggle'),s=localStorage.getItem('theme');
+    if(s==='light'){document.body.classList.add('light');t.textContent='☀️'}
+    t.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');t.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark')});
+    const nb=document.getElementById('notify-btn');
+    if('Notification' in window){if(Notification.permission==='granted')nb.textContent='🔔✓';nb.addEventListener('click',async()=>{const p=await Notification.requestPermission();if(p==='granted')nb.textContent='🔔✓'})}
   </script>
 </body>
 </html>

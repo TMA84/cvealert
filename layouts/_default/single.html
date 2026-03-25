@@ -1,12 +1,17 @@
 {{ define "main" }}
-<article>
-  <h2>{{ .Title }}</h2>
-  <time>{{ .Date.Format "2006-01-02" }}</time>
-  <span class="severity">CVSS: {{ .Params.cvss }} ({{ .Params.severity }})</span>
+<a href="{{ "/" | relURL }}" class="back-link">← Back to all CVEs</a>
+<div class="single-content">
+  <div class="cve-header" style="margin-bottom:1rem">
+    <span class="cve-id" style="font-size:1.4rem">{{ .Title }}</span>
+    {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
+    {{ else }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>{{ end }}
+    {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+    <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
+  </div>
   {{ .Content }}
   {{ with .Params.references }}
   <h3>References</h3>
   <ul>{{ range . }}<li><a href="{{ . }}">{{ . }}</a></li>{{ end }}</ul>
   {{ end }}
-</article>
+</div>
 {{ end }}
