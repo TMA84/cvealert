@@ -4,7 +4,9 @@
   <div class="cve-header" style="margin-bottom:1rem">
     <span class="cve-id" style="font-size:1.4rem">{{ .Title }}</span>
     {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
-    {{ else }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>{{ end }}
+    {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>
+    {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM {{ .Params.cvss }}</span>
+    {{ else }}<span class="badge badge-low">{{ .Params.severity }} {{ .Params.cvss }}</span>{{ end }}
     {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>

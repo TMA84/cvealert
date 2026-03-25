@@ -11,7 +11,7 @@ def fetch_cves():
     fmt = "%Y-%m-%dT%H:%M:%S.000"
     params = (
         f"?pubStartDate={start.strftime(fmt)}&pubEndDate={end.strftime(fmt)}"
-        f"&cvssV3Severity=HIGH&cvssV3Severity=CRITICAL&resultsPerPage=50"
+        f"&resultsPerPage=200"
     )
     req = urllib.request.Request(API + params, headers={"User-Agent": "cve-blog/1.0"})
     with urllib.request.urlopen(req, timeout=30) as r:

@@ -1,16 +1,20 @@
 {{ define "main" }}
 
 {{ $posts := where .Site.RegularPages "Section" "posts" }}
-{{ $critical := 0 }}{{ $high := 0 }}
+{{ $critical := 0 }}{{ $high := 0 }}{{ $medium := 0 }}{{ $low := 0 }}
 {{ range $posts }}
   {{ if eq .Params.severity "CRITICAL" }}{{ $critical = add $critical 1 }}{{ end }}
   {{ if eq .Params.severity "HIGH" }}{{ $high = add $high 1 }}{{ end }}
+  {{ if eq .Params.severity "MEDIUM" }}{{ $medium = add $medium 1 }}{{ end }}
+  {{ if eq .Params.severity "LOW" }}{{ $low = add $low 1 }}{{ end }}
 {{ end }}
 
 <div class="stats">
   <div class="stat"><div class="stat-value">{{ len $posts }}</div><div class="stat-label">Total CVEs</div></div>
   <div class="stat"><div class="stat-value critical">{{ $critical }}</div><div class="stat-label">Critical</div></div>
   <div class="stat"><div class="stat-value high">{{ $high }}</div><div class="stat-label">High</div></div>
+  <div class="stat"><div class="stat-value medium">{{ $medium }}</div><div class="stat-label">Medium</div></div>
+  <div class="stat"><div class="stat-value low">{{ $low }}</div><div class="stat-label">Low</div></div>
 </div>
 
 <div class="filters">
@@ -19,6 +23,8 @@
     <option value="">All Severities</option>
     <option value="CRITICAL">Critical</option>
     <option value="HIGH">High</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="LOW">Low</option>
   </select>
   <select id="vendor" aria-label="Vendor">
     <option value="">All Vendors</option>
@@ -43,7 +49,9 @@
   <div class="cve-header">
     <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
     {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
-    {{ else }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>{{ end }}
+    {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>
+    {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM {{ .Params.cvss }}</span>
+    {{ else }}<span class="badge badge-low">{{ .Params.severity }} {{ .Params.cvss }}</span>{{ end }}
     {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>

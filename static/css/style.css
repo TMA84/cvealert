@@ -11,6 +11,10 @@
   --critical-bg: rgba(239,68,68,.12);
   --high: #f59e0b;
   --high-bg: rgba(245,158,11,.12);
+  --medium: #3b82f6;
+  --medium-bg: rgba(59,130,246,.12);
+  --low: #6b7280;
+  --low-bg: rgba(107,114,128,.12);
   --vendor: #8b5cf6;
   --vendor-bg: rgba(139,92,246,.12);
   --green: #10b981;
@@ -55,6 +59,8 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .stat-label { font-size: .75rem; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; }
 .stat-value.critical { color: var(--critical); }
 .stat-value.high { color: var(--high); }
+.stat-value.medium { color: var(--medium); }
+.stat-value.low { color: var(--low); }
 
 /* Filters */
 .filters { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin: 1rem 0; display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
@@ -80,6 +86,8 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .badge { padding: .15rem .6rem; border-radius: 6px; font-size: .75rem; font-weight: 600; letter-spacing: .02em; }
 .badge-critical { background: var(--critical-bg); color: var(--critical); border: 1px solid rgba(239,68,68,.25); }
 .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid rgba(245,158,11,.25); }
+.badge-medium { background: var(--medium-bg); color: var(--medium); border: 1px solid rgba(59,130,246,.25); }
+.badge-low { background: var(--low-bg); color: var(--low); border: 1px solid rgba(107,114,128,.25); }
 .badge-vendor { background: var(--vendor-bg); color: var(--vendor); border: 1px solid rgba(139,92,246,.25); }
 .cve-date { color: var(--text2); font-size: .8rem; margin-left: auto; }
 .cve-desc { color: var(--text2); font-size: .875rem; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
