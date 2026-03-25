@@ -61,7 +61,8 @@
     const nb=document.getElementById('notify-btn');
     if('serviceWorker' in navigator && 'Notification' in window){
       const swUrl='{{ "sw.js" | absURL }}';
-      navigator.serviceWorker.register(swUrl,{scope:'{{ "/" | absURL }}'}).then(()=>{
+      const swScope='{{ "/" | absURL }}';
+      navigator.serviceWorker.register(swUrl,{scope:swScope}).then(()=>{
         console.log('SW registered');
         updateBtn();
       }).catch(e=>console.error('SW failed:',e));
@@ -75,7 +76,7 @@
         } else {
           const p=await Notification.requestPermission();
           if(p==='granted'){
-            await navigator.serviceWorker.register(swUrl,{scope:'{{ "/" | absURL }}'});
+            await navigator.serviceWorker.register(swUrl,{scope:swScope});
             updateBtn();startChecks();
           }
         }
