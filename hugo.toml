@@ -1,6 +1,6 @@
 baseURL = "https://TMA84.github.io/cvealert/"
 languageCode = "en-us"
-title = "CVE Alert"
+title = "CVE Alert & Security Feed"
 description = "Automated security vulnerability feed from NVD, CISA KEV, and CERT-Bund."
 paginate = 20
 enableRobotsTXT = true
