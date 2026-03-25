@@ -24,6 +24,7 @@
 
 <div id="posts">
 {{ range .Site.RegularPages }}
+{{ if eq .Section "posts" }}
 <article data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-text="{{ .Title }} {{ .Summary | plainify | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
   <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
   <time>{{ .Date.Format "2006-01-02" }}</time>
@@ -31,6 +32,7 @@
   <span class="vendor">{{ .Params.vendor | default "unknown" }}</span>
   <p>{{ .Summary }}</p>
 </article>
+{{ end }}
 {{ end }}
 </div>
 
