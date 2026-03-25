@@ -24,6 +24,17 @@
   </div>
   <div class="filter-row">
     <div class="filter-group">
+      <label>Period</label>
+      <div class="time-tabs">
+        <button class="time-tab" data-days="1">Today</button>
+        <button class="time-tab" data-days="3">3d</button>
+        <button class="time-tab" data-days="7">7d</button>
+        <button class="time-tab" data-days="14">14d</button>
+        <button class="time-tab" data-days="30">30d</button>
+        <button class="time-tab active" data-days="0">All</button>
+      </div>
+    </div>
+    <div class="filter-group">
       <label>Severity</label>
       <div class="multi-select" id="severity-ms" data-filter="severity">
         <button class="ms-toggle" type="button">All</button>
@@ -152,6 +163,10 @@ function filter(){
   const q=$('#search').value.toLowerCase();
   const sevs=getChecked('severity-ms'),vens=getChecked('vendor-ms'),srcs=getChecked('source-ms');
   const nw=$('#newonly').value,from=$('#date-from').value,to=$('#date-to').value;
+  const activeTab=document.querySelector('.time-tab.active');
+  const days=activeTab?parseInt(activeTab.dataset.days):0;
+  let cutoff='';
+  if(days>0){const d=new Date();d.setDate(d.getDate()-days);cutoff=d.toISOString().slice(0,10)}
   let n=0;
   posts.forEach(p=>{
     const text=p.dataset.text+' '+p.textContent.toLowerCase();
@@ -160,6 +175,7 @@ function filter(){
       &&(!vens.length||vens.some(v=>p.dataset.vendor.split(', ').includes(v)))
       &&(!srcs.length||srcs.some(s=>p.dataset.source.split(',').includes(s)))
       &&(!nw||p.dataset.new==='true')
+      &&(!cutoff||p.dataset.date>=cutoff)
       &&(!from||p.dataset.date>=from)
       &&(!to||p.dataset.date<=to);
     p.style.display=show?'':'none';
@@ -176,6 +192,7 @@ document.querySelectorAll('.multi-select').forEach(ms=>{
   ms.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(ms);filter()}));
 });
 document.addEventListener('click',e=>{document.querySelectorAll('.multi-select.open').forEach(ms=>{if(!ms.contains(e.target))ms.classList.remove('open')})});
+document.querySelectorAll('.time-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.time-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filter()})});
 const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(v&&v!=='unknown')vs.add(v)}));
 const vOpts=document.getElementById('vendor-options');
 [...vs].sort().forEach(v=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+v+'"> '+v;vOpts.appendChild(l)});
