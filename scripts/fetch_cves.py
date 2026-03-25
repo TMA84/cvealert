@@ -63,52 +63,61 @@ def write_post(path, frontmatter):
 
 def fetch_nvd(kev_ids):
     end = datetime.now(timezone.utc)
-    start = end - timedelta(days=1)
+    start = end - timedelta(days=7)
     fmt = "%Y-%m-%dT%H:%M:%S.000"
-    params = (
-        f"?pubStartDate={start.strftime(fmt)}&pubEndDate={end.strftime(fmt)}"
-        f"&resultsPerPage=200"
-    )
-    data = json.loads(http_get(API + params))
+    start_idx = 0
     count = 0
-    for v in data.get("vulnerabilities", []):
-        cve = v["cve"]
-        cve_id = cve["id"]
-        desc_list = cve.get("descriptions", [])
-        desc = next((d["value"] for d in desc_list if d["lang"] == "en"), "No description.")
-        metrics = cve.get("metrics", {})
-        cvss, severity = 0.0, "UNKNOWN"
-        for key in ("cvssMetricV31", "cvssMetricV30", "cvssMetricV2"):
-            if key in metrics:
-                m = metrics[key][0]["cvssData"]
-                cvss = m.get("baseScore", 0.0)
-                severity = m.get("baseSeverity", "UNKNOWN")
-                break
-        refs = [r["url"] for r in cve.get("references", [])[:5]]
-        vendors = set()
-        for conf in cve.get("configurations", []):
-            for node in conf.get("nodes", []):
-                for match in node.get("cpeMatch", []):
-                    parts = match.get("criteria", "").split(":")
-                    if len(parts) >= 5:
-                        vendors.add(parts[3])
-        vendor = ", ".join(sorted(vendors)) if vendors else "unknown"
-        date = cve.get("published", datetime.now(timezone.utc).isoformat())
-        exploited = cve_id in kev_ids
-        sources = ["NVD"]
-        if exploited:
-            sources.append("CISA KEV")
-        front = (
-            f'---\ntitle: "{cve_id}"\ndate: {date}\n'
-            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
-            f'exploited: {str(exploited).lower()}\n'
-            f'sources: {json.dumps(sources)}\n'
-            f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
-            f'summary: |\n  {safe_yaml(desc)}\n'
-            f'references: {json.dumps(refs)}\n---\n'
+    while True:
+        params = (
+            f"?pubStartDate={start.strftime(fmt)}&pubEndDate={end.strftime(fmt)}"
+            f"&resultsPerPage=200&startIndex={start_idx}"
         )
-        if write_post(os.path.join(OUT, f"{cve_id.lower()}.md"), front):
-            count += 1
+        data = json.loads(http_get(API + params))
+        vulns = data.get("vulnerabilities", [])
+        if not vulns:
+            break
+        for v in vulns:
+            cve = v["cve"]
+            cve_id = cve["id"]
+            desc_list = cve.get("descriptions", [])
+            desc = next((d["value"] for d in desc_list if d["lang"] == "en"), "No description.")
+            metrics = cve.get("metrics", {})
+            cvss, severity = 0.0, "UNKNOWN"
+            for key in ("cvssMetricV31", "cvssMetricV30", "cvssMetricV2"):
+                if key in metrics:
+                    m = metrics[key][0]["cvssData"]
+                    cvss = m.get("baseScore", 0.0)
+                    severity = m.get("baseSeverity", "UNKNOWN")
+                    break
+            refs = [r["url"] for r in cve.get("references", [])[:5]]
+            vendors = set()
+            for conf in cve.get("configurations", []):
+                for node in conf.get("nodes", []):
+                    for match in node.get("cpeMatch", []):
+                        parts = match.get("criteria", "").split(":")
+                        if len(parts) >= 5:
+                            vendors.add(parts[3])
+            vendor = ", ".join(sorted(vendors)) if vendors else "unknown"
+            date = cve.get("published", datetime.now(timezone.utc).isoformat())
+            exploited = cve_id in kev_ids
+            sources = ["NVD"]
+            if exploited:
+                sources.append("CISA KEV")
+            front = (
+                f'---\ntitle: "{cve_id}"\ndate: {date}\n'
+                f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
+                f'exploited: {str(exploited).lower()}\n'
+                f'sources: {json.dumps(sources)}\n'
+                f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
+                f'summary: |\n  {safe_yaml(desc)}\n'
+                f'references: {json.dumps(refs)}\n---\n'
+            )
+            if write_post(os.path.join(OUT, f"{cve_id.lower()}.md"), front):
+                count += 1
+        total = data.get("totalResults", 0)
+        start_idx += 200
+        if start_idx >= total:
+            break
     return count
 
 
