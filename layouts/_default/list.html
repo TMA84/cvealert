@@ -29,6 +29,12 @@
   <select id="vendor" aria-label="Vendor">
     <option value="">All Vendors</option>
   </select>
+  <select id="source" aria-label="Source">
+    <option value="">All Sources</option>
+    <option value="NVD">NVD</option>
+    <option value="CISA KEV">CISA KEV</option>
+    <option value="CERT-Bund">CERT-Bund</option>
+  </select>
   <input type="date" id="date-from" aria-label="From">
   <input type="date" id="date-to" aria-label="To">
   <select id="sort" aria-label="Sort">
@@ -45,14 +51,16 @@
 
 <div class="cve-list" id="posts">
 {{ range $posts }}
-<article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-text="{{ .Title | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
+<article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-source="{{ delimit (.Params.sources | default (slice "NVD")) "," }}" data-exploited="{{ .Params.exploited | default false }}" data-text="{{ .Title | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
   <div class="cve-header">
     <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
     {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
     {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>
     {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM {{ .Params.cvss }}</span>
     {{ else }}<span class="badge badge-low">{{ .Params.severity }} {{ .Params.cvss }}</span>{{ end }}
+    {{ if .Params.exploited }}<span class="badge badge-exploited">🔥 Exploited</span>{{ end }}
     {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+    {{ range .Params.sources }}<span class="badge badge-source">{{ . }}</span>{{ end }}
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>
   <p class="cve-desc">{{ .Params.summary }}</p>
@@ -62,10 +70,10 @@
 
 <script>
 const $=s=>document.querySelector(s),posts=[...document.querySelectorAll('.cve-card')],container=$('#posts');
-function filter(){const q=$('#search').value.toLowerCase(),sev=$('#severity').value,ven=$('#vendor').value,from=$('#date-from').value,to=$('#date-to').value;let n=0;posts.forEach(p=>{const text=p.dataset.text+' '+p.textContent.toLowerCase();const show=(!q||text.includes(q))&&(!sev||p.dataset.severity===sev)&&(!ven||p.dataset.vendor.split(', ').includes(ven))&&(!from||p.dataset.date>=from)&&(!to||p.dataset.date<=to);p.style.display=show?'':'none';if(show)n++});$('#count').textContent=n+' CVEs'}
+function filter(){const q=$('#search').value.toLowerCase(),sev=$('#severity').value,ven=$('#vendor').value,src=$('#source').value,from=$('#date-from').value,to=$('#date-to').value;let n=0;posts.forEach(p=>{const text=p.dataset.text+' '+p.textContent.toLowerCase();const show=(!q||text.includes(q))&&(!sev||p.dataset.severity===sev)&&(!ven||p.dataset.vendor.split(', ').includes(ven))&&(!src||p.dataset.source.split(',').includes(src))&&(!from||p.dataset.date>=from)&&(!to||p.dataset.date<=to);p.style.display=show?'':'none';if(show)n++});$('#count').textContent=n+' CVEs'}
 function sort(){const[key,dir]=$('#sort').value.split('-');[...posts].sort((a,b)=>{const va=key==='cvss'?parseFloat(a.dataset.cvss):a.dataset.date,vb=key==='cvss'?parseFloat(b.dataset.cvss):b.dataset.date;return dir==='desc'?(vb>va?1:-1):(va>vb?1:-1)}).forEach(p=>container.appendChild(p))}
-$('#export').addEventListener('click',()=>{const v=posts.filter(p=>p.style.display!=='none'),rows=[['CVE','Date','Severity','CVSS','Vendor']];v.forEach(p=>rows.push([p.dataset.title,p.dataset.date,p.dataset.severity,p.dataset.cvss,p.dataset.vendor]));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='cves-'+new Date().toISOString().slice(0,10)+'.csv';a.click()});
-['search','severity','vendor','date-from','date-to'].forEach(id=>document.getElementById(id).addEventListener('input',filter));
+$('#export').addEventListener('click',()=>{const v=posts.filter(p=>p.style.display!=='none'),rows=[['CVE','Date','Severity','CVSS','Vendor','Sources']];v.forEach(p=>rows.push([p.dataset.title,p.dataset.date,p.dataset.severity,p.dataset.cvss,p.dataset.vendor,p.dataset.source]));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='cves-'+new Date().toISOString().slice(0,10)+'.csv';a.click()});
+['search','severity','vendor','source','date-from','date-to'].forEach(id=>document.getElementById(id).addEventListener('input',filter));
 $('#sort').addEventListener('change',()=>{sort();filter()});
 const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(v&&v!=='unknown')vs.add(v)}));[...vs].sort().forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;$('#vendor').appendChild(o)});
 filter();
