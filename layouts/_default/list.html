@@ -85,10 +85,27 @@
   </div>
 </div>
 
-<div class="cve-list" id="posts">
-{{ range $posts }}
 {{ $now := now }}
 {{ $yesterday := $now.AddDate 0 0 -1 }}
+
+{{ $trending := where (where $posts ".Params.cvss" ">=" 9.0) ".Date.After" $yesterday }}
+{{ if $trending }}
+<div class="trending">
+  <h2 class="trending-title">Trending — Critical CVEs (24h)</h2>
+  <div class="trending-list">
+  {{ range first 5 $trending }}
+  <a href="{{ .RelPermalink }}" class="trending-card">
+    <span class="trending-id">{{ .Title }}</span>
+    <span class="badge badge-critical">{{ .Params.cvss }}</span>
+    {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+  </a>
+  {{ end }}
+  </div>
+</div>
+{{ end }}
+
+<div class="cve-list" id="posts">
+{{ range $posts }}
 <article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-source="{{ delimit (.Params.sources | default (slice "NVD")) "," }}" data-exploited="{{ .Params.exploited | default false }}" data-new="{{ if .Date.After $yesterday }}true{{ else }}false{{ end }}" data-text="{{ .Title | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
   <div class="cve-header">
     <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
@@ -103,6 +120,7 @@
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>
   <p class="cve-desc">{{ .Params.summary }}</p>
+  {{ if gt .Params.cvss 0.0 }}<div class="cvss-bar"><div class="cvss-fill {{ if ge .Params.cvss 9.0 }}critical{{ else if ge .Params.cvss 7.0 }}high{{ else if ge .Params.cvss 4.0 }}medium{{ else }}low{{ end }}" style="width:{{ mul .Params.cvss 10 }}%"></div></div>{{ end }}
 </article>
 {{ end }}
 </div>
@@ -163,5 +181,25 @@ const vOpts=document.getElementById('vendor-options');
 [...vs].sort().forEach(v=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+v+'"> '+v;vOpts.appendChild(l)});
 document.querySelectorAll('#vendor-ms input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(document.getElementById('vendor-ms'));filter()}));
 loadState();sort();filter();
+
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#search').focus()}
+  if(e.key==='Escape'){$('#search').value='';document.querySelectorAll('.ms-dropdown input:checked').forEach(c=>c.checked=false);document.querySelectorAll('.multi-select').forEach(ms=>updateToggle(ms));$('#newonly').value='';$('#date-from').value='';$('#date-to').value='';$('#sort').value='date-desc';sort();filter();$('#search').blur()}
+});
+
+// Back to top
+const btt=document.createElement('button');btt.id='back-to-top';btt.textContent='↑';btt.title='Back to top';document.body.appendChild(btt);
+window.addEventListener('scroll',()=>{btt.style.display=window.scrollY>600?'block':'none'});
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// Infinite scroll (show 50, load more on scroll)
+let visible=50;
+function applyPagination(){let shown=0;posts.forEach(p=>{if(p.style.display==='none')return;shown++;p.style.display=shown<=visible?'':'none'});
+  const total=posts.filter(p=>p.dataset._filtered!=='true').length;
+  if(shown>visible)$('#count').textContent=$('#count').textContent+' (showing '+visible+')'}
+posts.forEach(p=>p.dataset._filtered='false');
+const origFilter=filter;
+window.addEventListener('scroll',()=>{if(window.innerHeight+window.scrollY>=document.body.offsetHeight-400){visible+=50;filter()}});
 </script>
 {{ end }}

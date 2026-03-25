@@ -3,7 +3,19 @@ const CHECK_INTERVAL = 30 * 60 * 1000; // 30 min
 const FEED_URL = self.registration.scope + 'index.xml';
 
 self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', () => self.clients.claim());
+self.addEventListener('activate', (e) => { self.clients.claim(); e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE_KEY).map(k=>caches.delete(k))))); });
+
+// Offline cache
+self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request).then(r => {
+      const clone = r.clone();
+      caches.open('cvealert-offline').then(c => c.put(e.request, clone));
+      return r;
+    }).catch(() => caches.match(e.request))
+  );
+});
 
 async function checkForNewCVEs() {
   try {
