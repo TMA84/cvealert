@@ -26,13 +26,6 @@ jobs:
       - name: Fetch CVEs
         run: python scripts/fetch_cves.py
 
-      - name: Generate weekly digest (Mondays)
-        if: github.event.schedule == '0 */3 * * *'
-        run: |
-          if [ "$(date -u +%u)" = "1" ] && [ "$(date -u +%H)" = "06" ]; then
-            python scripts/weekly_digest.py
-          fi
-
       - name: Commit new posts
         run: |
           git config user.name "github-actions[bot]"

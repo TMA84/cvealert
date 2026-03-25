@@ -1,0 +1,107 @@
+{{ define "main" }}
+{{ $now := now }}
+{{ $week := $now.AddDate 0 0 -7 }}
+{{ $posts := where (where .Site.RegularPages "Section" "posts") ".Date.After" $week }}
+
+{{ $total := len $posts }}
+{{ $critical := 0 }}{{ $high := 0 }}{{ $medium := 0 }}{{ $low := 0 }}
+{{ $exploited := slice }}
+{{ $top := slice }}
+{{ range $posts }}
+  {{ if eq .Params.severity "CRITICAL" }}{{ $critical = add $critical 1 }}{{ end }}
+  {{ if eq .Params.severity "HIGH" }}{{ $high = add $high 1 }}{{ end }}
+  {{ if eq .Params.severity "MEDIUM" }}{{ $medium = add $medium 1 }}{{ end }}
+  {{ if eq .Params.severity "LOW" }}{{ $low = add $low 1 }}{{ end }}
+  {{ if .Params.exploited }}{{ $exploited = $exploited | append . }}{{ end }}
+  {{ if ge .Params.cvss 9.0 }}{{ $top = $top | append . }}{{ end }}
+{{ end }}
+
+<a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to CVEs</a>
+
+<div class="digest">
+  <header class="digest-header">
+    <h1>Weekly Digest</h1>
+    <p class="digest-period">{{ $week.Format "Jan 02" }} – {{ $now.Format "Jan 02, 2006" }}</p>
+    <p class="digest-subtitle">Auto-generated summary of the past 7 days. Updates on every build.</p>
+  </header>
+
+  <div class="digest-stats">
+    <div class="digest-stat">
+      <span class="digest-stat-value">{{ $total }}</span>
+      <span class="digest-stat-label">Total</span>
+    </div>
+    <div class="digest-stat">
+      <span class="digest-stat-value critical">{{ $critical }}</span>
+      <span class="digest-stat-label">Critical</span>
+    </div>
+    <div class="digest-stat">
+      <span class="digest-stat-value high">{{ $high }}</span>
+      <span class="digest-stat-label">High</span>
+    </div>
+    <div class="digest-stat">
+      <span class="digest-stat-value medium">{{ $medium }}</span>
+      <span class="digest-stat-label">Medium</span>
+    </div>
+    <div class="digest-stat">
+      <span class="digest-stat-value low">{{ $low }}</span>
+      <span class="digest-stat-label">Low</span>
+    </div>
+  </div>
+
+  {{ with $exploited }}
+  <section class="digest-section">
+    <h2 class="digest-section-title exploited-title">Actively Exploited ({{ len . }})</h2>
+    <div class="digest-list">
+      {{ range . }}
+      <a href="{{ .RelPermalink }}" class="digest-item exploited-item">
+        <span class="digest-item-id">{{ .Title }}</span>
+        <span class="badge badge-critical">{{ .Params.cvss }}</span>
+        {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+        <span class="digest-item-desc">{{ .Params.summary | plainify | truncate 80 }}</span>
+      </a>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with $top }}
+  <section class="digest-section">
+    <h2 class="digest-section-title">Critical Vulnerabilities — CVSS ≥ 9.0 ({{ len . }})</h2>
+    <div class="digest-list">
+      {{ range first 20 . }}
+      <a href="{{ .RelPermalink }}" class="digest-item">
+        <div class="digest-item-row">
+          <span class="digest-item-id">{{ .Title }}</span>
+          <span class="badge badge-critical">{{ .Params.cvss }}</span>
+          {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+          <span class="digest-item-date">{{ .Date.Format "Jan 02" }}</span>
+        </div>
+        <span class="digest-item-desc">{{ .Params.summary | plainify | truncate 120 }}</span>
+      </a>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  <section class="digest-section">
+    <h2 class="digest-section-title">Top Affected Vendors</h2>
+    <div id="vendor-list" class="digest-vendors"></div>
+  </section>
+
+  <script id="vendor-data" type="application/json">
+  [{{ range $i, $p := $posts }}{{ if $i }},{{ end }}"{{ .Params.vendor | default "unknown" }}"{{ end }}]
+  </script>
+  <script>
+  const vd=JSON.parse(document.getElementById('vendor-data').textContent);
+  const vc={};vd.forEach(v=>{if(v&&v!=='unknown')vc[v]=(vc[v]||0)+1});
+  const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  const el=document.getElementById('vendor-list');
+  sorted.forEach(([name,count])=>{
+    const d=document.createElement('div');d.className='digest-vendor';
+    const pct=Math.round(count/vd.length*100);
+    d.innerHTML=`<span class="digest-vendor-name">${name}</span><div class="digest-vendor-bar"><div class="digest-vendor-fill" style="width:${pct}%"></div></div><span class="digest-vendor-count">${count}</span>`;
+    el.appendChild(d);
+  });
+  </script>
+</div>
+{{ end }}

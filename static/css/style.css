@@ -178,6 +178,35 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .stats-card h2 { font-size: 1rem; margin-bottom: 1rem; color: var(--text); }
 @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr; } }
 
+/* Digest */
+.digest { max-width: 800px; }
+.digest-header { margin: 1.5rem 0; }
+.digest-header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: .25rem; }
+.digest-period { font-size: 1.1rem; color: var(--accent2); font-weight: 600; }
+.digest-subtitle { font-size: .85rem; color: var(--text2); margin-top: .25rem; }
+.digest-stats { display: flex; gap: .75rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.digest-stat { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: .75rem 1.25rem; text-align: center; flex: 1; min-width: 80px; }
+.digest-stat-value { display: block; font-size: 1.5rem; font-weight: 700; }
+.digest-stat-label { font-size: .7rem; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; }
+.digest-section { margin: 2rem 0; }
+.digest-section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: .75rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+.exploited-title { color: var(--critical); border-color: rgba(239,68,68,.3); }
+.digest-list { display: flex; flex-direction: column; gap: .5rem; }
+.digest-item { display: flex; flex-direction: column; gap: .25rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; text-decoration: none; transition: all .15s; }
+.digest-item:hover { border-color: var(--accent); transform: translateY(-1px); }
+.exploited-item { border-color: rgba(239,68,68,.3); }
+.exploited-item:hover { border-color: var(--critical); }
+.digest-item-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.digest-item-id { font-weight: 600; color: var(--accent2); font-size: .9rem; }
+.digest-item-date { color: var(--text2); font-size: .8rem; margin-left: auto; }
+.digest-item-desc { color: var(--text2); font-size: .8rem; line-height: 1.4; }
+.digest-vendors { display: flex; flex-direction: column; gap: .5rem; }
+.digest-vendor { display: flex; align-items: center; gap: .75rem; }
+.digest-vendor-name { font-size: .85rem; font-weight: 500; min-width: 120px; color: var(--text); }
+.digest-vendor-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.digest-vendor-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+.digest-vendor-count { font-size: .8rem; color: var(--text2); min-width: 30px; text-align: right; }
+
 footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: 2rem; text-align: center; font-size: .8rem; color: var(--text2); }
 footer a { color: var(--text2); margin: 0 .5rem; }
 footer a:hover { color: var(--accent); }
