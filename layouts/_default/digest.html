@@ -5,56 +5,84 @@
 
 <div class="digest">
   <header class="digest-header">
-    <h1>Security Digest</h1>
+    <div class="digest-header-top">
+      <div>
+        <h1>Security Digest</h1>
+        <p class="digest-subtitle">Automated summary — updates every 3 hours</p>
+      </div>
+      <div class="digest-period" id="d-period"></div>
+    </div>
     <div class="digest-tabs">
-      <button class="digest-tab active" data-days="1">Today</button>
+      <button class="digest-tab" data-days="1">Today</button>
       <button class="digest-tab" data-days="3">3 Days</button>
-      <button class="digest-tab" data-days="7">Week</button>
+      <button class="digest-tab active" data-days="7">Week</button>
       <button class="digest-tab" data-days="14">2 Weeks</button>
       <button class="digest-tab" data-days="30">Month</button>
     </div>
   </header>
 
-  <div class="digest-stats">
-    <div class="digest-stat"><span class="digest-stat-value" id="d-total">0</span><span class="digest-stat-label">Total</span></div>
-    <div class="digest-stat"><span class="digest-stat-value critical" id="d-critical">0</span><span class="digest-stat-label">Critical</span></div>
-    <div class="digest-stat"><span class="digest-stat-value high" id="d-high">0</span><span class="digest-stat-label">High</span></div>
-    <div class="digest-stat"><span class="digest-stat-value medium" id="d-medium">0</span><span class="digest-stat-label">Medium</span></div>
-    <div class="digest-stat"><span class="digest-stat-value low" id="d-low">0</span><span class="digest-stat-label">Low</span></div>
+  <div class="digest-stats" id="d-stats">
+    <div class="digest-stat"><span class="digest-stat-value" id="d-total">—</span><span class="digest-stat-label">Total</span></div>
+    <div class="digest-stat"><span class="digest-stat-value critical" id="d-critical">—</span><span class="digest-stat-label">Critical</span></div>
+    <div class="digest-stat"><span class="digest-stat-value high" id="d-high">—</span><span class="digest-stat-label">High</span></div>
+    <div class="digest-stat"><span class="digest-stat-value medium" id="d-medium">—</span><span class="digest-stat-label">Medium</span></div>
+    <div class="digest-stat"><span class="digest-stat-value low" id="d-low">—</span><span class="digest-stat-label">Low</span></div>
+  </div>
+
+  <div id="d-empty" class="digest-empty" style="display:none">
+    <p>No vulnerabilities found for this period.</p>
   </div>
 
   <section class="digest-section" id="sec-exploited" style="display:none">
-    <h2 class="digest-section-title exploited-title">Actively Exploited (<span id="d-exp-count">0</span>)</h2>
+    <div class="digest-section-header exploited-header">
+      <h2>Actively Exploited</h2>
+      <span class="digest-count" id="d-exp-count">0</span>
+    </div>
     <div class="digest-list" id="d-exploited"></div>
   </section>
 
-  <section class="digest-section" id="sec-critical">
-    <h2 class="digest-section-title">Critical — CVSS ≥ 9.0 (<span id="d-crit-count">0</span>)</h2>
+  <section class="digest-section" id="sec-critical" style="display:none">
+    <div class="digest-section-header">
+      <h2>Critical — CVSS ≥ 9.0</h2>
+      <span class="digest-count" id="d-crit-count">0</span>
+    </div>
     <div class="digest-list" id="d-top"></div>
   </section>
 
-  <section class="digest-section">
-    <h2 class="digest-section-title">Top Affected Vendors</h2>
+  <section class="digest-section" id="sec-vendors" style="display:none">
+    <div class="digest-section-header">
+      <h2>Top Affected Vendors</h2>
+    </div>
     <div id="d-vendors" class="digest-vendors"></div>
   </section>
 
-  <section class="digest-section" id="sec-recent">
-    <h2 class="digest-section-title">Recent High Severity (<span id="d-high-count">0</span>)</h2>
+  <section class="digest-section" id="sec-recent" style="display:none">
+    <div class="digest-section-header">
+      <h2>Recent High Severity</h2>
+      <span class="digest-count" id="d-high-count">0</span>
+    </div>
     <div class="digest-list" id="d-recent"></div>
   </section>
 </div>
 
 <script id="all-posts" type="application/json">
-[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"t":"{{ .Title }}","d":"{{ .Date.Format "2006-01-02" }}","c":{{ .Params.cvss | default 0 }},"s":"{{ .Params.severity | default "UNKNOWN" }}","v":"{{ .Params.vendor | default "unknown" }}","e":{{ if .Params.exploited }}true{{ else }}false{{ end }},"u":"{{ .RelPermalink }}","desc":"{{ .Params.summary | plainify | truncate 120 | htmlEscape }}"}{{ end }}]
+[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"t":"{{ .Title }}","d":"{{ .Date.Format "2006-01-02" }}","c":{{ .Params.cvss | default 0.0 }},"s":"{{ .Params.severity | default "UNKNOWN" }}","v":"{{ .Params.vendor | default "unknown" }}","e":{{ if .Params.exploited }}true{{ else }}false{{ end }},"u":"{{ .RelPermalink }}","desc":{{ .Params.summary | default "" | plainify | truncate 120 | jsonify }}}{{ end }}]
 </script>
 
 <script>
 const all=JSON.parse(document.getElementById('all-posts').textContent);
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function fmtDate(d){return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()}
+
+function show(id,v){document.getElementById(id).style.display=v?'':'none'}
 
 function render(days){
   const cutoff=new Date();cutoff.setDate(cutoff.getDate()-days);
   const iso=cutoff.toISOString().slice(0,10);
   const filtered=all.filter(p=>p.d>=iso);
+
+  document.getElementById('d-period').textContent=fmtDate(cutoff)+' — '+fmtDate(new Date());
 
   let cr=0,hi=0,me=0,lo=0;
   const exploited=[],top=[],recent=[],vc={};
@@ -74,30 +102,34 @@ function render(days){
   document.getElementById('d-medium').textContent=me;
   document.getElementById('d-low').textContent=lo;
 
+  show('d-empty',filtered.length===0);
+
   // Exploited
   const expEl=document.getElementById('d-exploited');
-  const expSec=document.getElementById('sec-exploited');
   document.getElementById('d-exp-count').textContent=exploited.length;
   expEl.innerHTML='';
-  if(exploited.length){expSec.style.display='';exploited.forEach(p=>expEl.innerHTML+=card(p,'exploited-item'))}
-  else expSec.style.display='none';
+  show('sec-exploited',exploited.length>0);
+  exploited.forEach(p=>{expEl.innerHTML+=card(p,'exploited-item')});
 
   // Top critical
   document.getElementById('d-crit-count').textContent=top.length;
   const topEl=document.getElementById('d-top');
   topEl.innerHTML='';
-  top.slice(0,20).forEach(p=>topEl.innerHTML+=card(p));
+  show('sec-critical',top.length>0);
+  top.slice(0,20).forEach(p=>{topEl.innerHTML+=card(p)});
 
   // Recent high
   document.getElementById('d-high-count').textContent=recent.length;
   const recEl=document.getElementById('d-recent');
   recEl.innerHTML='';
-  recent.slice(0,15).forEach(p=>recEl.innerHTML+=card(p));
+  show('sec-recent',recent.length>0);
+  recent.slice(0,15).forEach(p=>{recEl.innerHTML+=card(p)});
 
   // Vendors
   const venEl=document.getElementById('d-vendors');
   venEl.innerHTML='';
   const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  show('sec-vendors',sorted.length>0);
   const max=sorted[0]?sorted[0][1]:1;
   sorted.forEach(([n,c])=>{
     venEl.innerHTML+=`<div class="digest-vendor"><span class="digest-vendor-name">${n}</span><div class="digest-vendor-bar"><div class="digest-vendor-fill" style="width:${Math.round(c/max*100)}%"></div></div><span class="digest-vendor-count">${c}</span></div>`;
@@ -106,7 +138,8 @@ function render(days){
 
 function card(p,cls=''){
   const vb=p.v&&p.v!=='unknown'?`<span class="badge badge-vendor">${p.v}</span>`:'';
-  return `<a href="${p.u}" class="digest-item ${cls}"><div class="digest-item-row"><span class="digest-item-id">${p.t}</span><span class="badge badge-critical">${p.c}</span>${vb}<span class="digest-item-date">${p.d}</span></div><span class="digest-item-desc">${p.desc}</span></a>`;
+  const sevCls=p.s==='CRITICAL'?'badge-critical':p.s==='HIGH'?'badge-high':'badge-medium';
+  return `<a href="${p.u}" class="digest-item ${cls}"><div class="digest-item-row"><span class="digest-item-id">${p.t}</span><span class="badge ${sevCls}">${p.c}</span>${vb}<span class="digest-item-date">${p.d}</span></div><span class="digest-item-desc">${p.desc}</span></a>`;
 }
 
 document.querySelectorAll('.digest-tab').forEach(btn=>{
