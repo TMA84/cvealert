@@ -1,65 +1,77 @@
 {{ define "main" }}
 <a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to all CVEs</a>
-<div class="single-content">
-  <div class="cve-header" style="margin-bottom:1.5rem">
-    <span class="cve-id" style="font-size:1.4rem">{{ .Title }}</span>
-    {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
-    {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>
-    {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM {{ .Params.cvss }}</span>
-    {{ else }}<span class="badge badge-low">{{ .Params.severity }} {{ .Params.cvss }}</span>{{ end }}
-    {{ if .Params.exploited }}<span class="badge badge-exploited">🔥 Actively Exploited</span>{{ end }}
-    {{ range .Params.sources }}<span class="badge badge-source">{{ . }}</span>{{ end }}
-  </div>
 
-  <div class="detail-grid">
+<article class="single-content">
+  <header class="single-header">
+    <h1 class="single-title">{{ .Title }}</h1>
+    <div class="single-badges">
+      {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL</span>
+      {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH</span>
+      {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM</span>
+      {{ else }}<span class="badge badge-low">{{ .Params.severity }}</span>{{ end }}
+      {{ if .Params.exploited }}<span class="badge badge-exploited">🔥 Actively Exploited</span>{{ end }}
+      {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+      {{ range .Params.sources }}<span class="badge badge-source">{{ . }}</span>{{ end }}
+    </div>
+  </header>
+
+  <section class="detail-grid">
     <div class="detail-card">
-      <div class="detail-label">Published</div>
-      <div class="detail-value">{{ .Date.Format "2006-01-02 15:04 UTC" }}</div>
+      <span class="detail-label">CVSS Score</span>
+      <span class="detail-value cvss {{ if ge .Params.cvss 9.0 }}critical{{ else if ge .Params.cvss 7.0 }}high{{ else if ge .Params.cvss 4.0 }}medium{{ else }}low{{ end }}">{{ .Params.cvss }}</span>
     </div>
     <div class="detail-card">
-      <div class="detail-label">CVSS Score</div>
-      <div class="detail-value {{ if ge .Params.cvss 9.0 }}critical{{ else if ge .Params.cvss 7.0 }}high{{ else if ge .Params.cvss 4.0 }}medium{{ else }}low{{ end }}">{{ .Params.cvss }}</div>
+      <span class="detail-label">Severity</span>
+      <span class="detail-value">{{ .Params.severity | default "UNKNOWN" }}</span>
     </div>
     <div class="detail-card">
-      <div class="detail-label">Severity</div>
-      <div class="detail-value">{{ .Params.severity | default "UNKNOWN" }}</div>
+      <span class="detail-label">Published</span>
+      <span class="detail-value">{{ .Date.Format "Jan 02, 2006" }}</span>
     </div>
     <div class="detail-card">
-      <div class="detail-label">Vendor</div>
-      <div class="detail-value">{{ .Params.vendor | default "unknown" }}</div>
+      <span class="detail-label">Vendor</span>
+      <span class="detail-value">{{ .Params.vendor | default "—" }}</span>
     </div>
-  </div>
+  </section>
 
   {{ if .Params.exploited }}
   <div class="alert alert-exploited">
-    ⚠️ This vulnerability is listed in the <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA Known Exploited Vulnerabilities Catalog</a>. Active exploitation has been observed.
+    ⚠️ This vulnerability is in the <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA Known Exploited Vulnerabilities Catalog</a>. Active exploitation has been observed. Immediate patching is recommended.
   </div>
   {{ end }}
 
-  <h3>Description</h3>
-  {{ .Content }}
-  {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
+  <section class="single-section">
+    <h2>Description</h2>
+    {{ .Content }}
+    {{ with .Params.summary }}<p class="desc-text">{{ . }}</p>{{ end }}
+  </section>
 
   {{ with .Params.patches }}
-  <div class="alert alert-patch">
-    <h3>🩹 Available Patches</h3>
-    <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
-  </div>
+  <section class="single-section">
+    <div class="alert alert-patch">
+      <h2>🩹 Available Patches</h2>
+      <ul>{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+    </div>
+  </section>
   {{ end }}
 
   {{ with .Params.advisories }}
-  <div class="alert alert-advisory">
-    <h3>📋 Vendor Advisories</h3>
-    <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
-  </div>
+  <section class="single-section">
+    <div class="alert alert-advisory">
+      <h2>📋 Vendor Advisories</h2>
+      <ul>{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+    </div>
+  </section>
   {{ end }}
 
   {{ with .Params.references }}
-  <h3>References</h3>
-  <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+  <section class="single-section">
+    <h2>References</h2>
+    <ul class="ref-list">{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
+  </section>
   {{ end }}
 
-  <div class="detail-footer">
+  <footer class="detail-footer">
     {{ if in .Params.sources "NVD" }}
     <a href="https://nvd.nist.gov/vuln/detail/{{ $.Title }}" rel="noopener" target="_blank" class="btn btn-secondary">View on NVD →</a>
     <a href="https://www.cve.org/CVERecord?id={{ $.Title }}" rel="noopener" target="_blank" class="btn btn-secondary">View on CVE.org →</a>
@@ -70,6 +82,6 @@
     {{ if in .Params.sources "CERT-Bund" }}
     {{ with index .Params.references 0 }}<a href="{{ . }}" rel="noopener" target="_blank" class="btn btn-secondary">View on CERT-Bund →</a>{{ end }}
     {{ end }}
-  </div>
-</div>
+  </footer>
+</article>
 {{ end }}
