@@ -9,7 +9,7 @@
       {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH</span>
       {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM</span>
       {{ else }}<span class="badge badge-low">{{ .Params.severity }}</span>{{ end }}
-      {{ if .Params.exploited }}<span class="badge badge-exploited">🔥 Actively Exploited</span>{{ end }}
+      {{ if .Params.exploited }}<span class="badge badge-exploited">Actively Exploited</span>{{ end }}
       {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
       {{ range .Params.sources }}<span class="badge badge-source">{{ . }}</span>{{ end }}
     </div>
@@ -36,7 +36,7 @@
 
   {{ if .Params.exploited }}
   <div class="alert alert-exploited">
-    ⚠️ This vulnerability is in the <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA Known Exploited Vulnerabilities Catalog</a>. Active exploitation has been observed. Immediate patching is recommended.
+    This vulnerability is in the <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA Known Exploited Vulnerabilities Catalog</a>. Active exploitation has been observed. Immediate patching is recommended.
   </div>
   {{ end }}
 
@@ -49,7 +49,7 @@
   {{ with .Params.patches }}
   <section class="single-section">
     <div class="alert alert-patch">
-      <h2>🩹 Available Patches</h2>
+      <h2>Available Patches</h2>
       <ul>{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
     </div>
   </section>
@@ -58,7 +58,7 @@
   {{ with .Params.advisories }}
   <section class="single-section">
     <div class="alert alert-advisory">
-      <h2>📋 Vendor Advisories</h2>
+      <h2>Vendor Advisories</h2>
       <ul>{{ range . }}<li><a href="{{ . }}" rel="noopener" target="_blank">{{ . }}</a></li>{{ end }}</ul>
     </div>
   </section>
