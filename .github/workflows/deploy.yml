@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Clean old posts for regeneration
+        run: rm -f content/posts/*.md
+
       - name: Fetch CVEs
         run: python scripts/fetch_cves.py
 
