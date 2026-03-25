@@ -22,6 +22,7 @@ def make_post(cve):
     desc_list = cve["cve"].get("descriptions", [])
     desc = next((d["value"] for d in desc_list if d["lang"] == "en"), "No description.")
     desc = desc.replace("{{", "{ {").replace("}}", "} }")
+    desc_indented = desc.replace("\n", "\n  ")
     metrics = cve["cve"].get("metrics", {})
     cvss = 0.0
     severity = "UNKNOWN"
@@ -50,7 +51,7 @@ def make_post(cve):
         f'---\ntitle: "{cve_id}"\ndate: {date}\n'
         f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
         f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
-        f'summary: |\n  {desc}\n'
+        f'summary: |\n  {desc_indented}\n'
         f'references: {json.dumps(refs)}\n---\n'
     )
     with open(path, "w") as f:
