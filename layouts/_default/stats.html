@@ -9,18 +9,6 @@
   {{ else }}{{ $unknown = add $unknown 1 }}{{ end }}
 {{ end }}
 
-{{ $vendors := dict }}
-{{ range $posts }}
-  {{ $v := .Params.vendor | default "unknown" }}
-  {{ if ne $v "unknown" }}
-    {{ if isset $vendors $v }}
-      {{ $vendors = merge $vendors (dict $v (add (index $vendors $v) 1)) }}
-    {{ else }}
-      {{ $vendors = merge $vendors (dict $v 1) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-
 <a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to CVEs</a>
 
 <h1 style="margin:1.5rem 0 1rem">Statistics</h1>
@@ -41,6 +29,10 @@
   <canvas id="timelineChart" height="150"></canvas>
 </div>
 
+<script id="post-data" type="application/json">
+[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"d":"{{ .Date.Format "2006-01-02" }}","v":"{{ .Params.vendor | default "unknown" }}"}{{ end }}]
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 const isDark=!document.body.classList.contains('light');
@@ -50,15 +42,18 @@ Chart.defaults.color=txtColor;Chart.defaults.borderColor=gridColor;
 
 new Chart(document.getElementById('severityChart'),{type:'doughnut',data:{labels:['Critical','High','Medium','Low','Unknown'],datasets:[{data:[{{ $critical }},{{ $high }},{{ $medium }},{{ $low }},{{ $unknown }}],backgroundColor:['#ef4444','#f59e0b','#3b82f6','#22c55e','#6b7280']}]},options:{plugins:{legend:{position:'bottom'}}}});
 
-{{ $vendorNames := slice }}{{ $vendorCounts := slice }}
-{{ range $k, $v := $vendors }}{{ $vendorNames = $vendorNames | append $k }}{{ $vendorCounts = $vendorCounts | append $v }}{{ end }}
-const vn={{ $vendorNames | jsonify }},vc={{ $vendorCounts | jsonify }};
-const sorted=vn.map((n,i)=>({n,c:vc[i]})).sort((a,b)=>b.c-a.c).slice(0,15);
-new Chart(document.getElementById('vendorChart'),{type:'bar',data:{labels:sorted.map(s=>s.n),datasets:[{label:'CVEs',data:sorted.map(s=>s.c),backgroundColor:'#3b82f6'}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+const raw=JSON.parse(document.getElementById('post-data').textContent);
 
-const dates={};
-{{ range $posts }}dates['{{ .Date.Format "2006-01-02" }}']=(dates['{{ .Date.Format "2006-01-02" }}']||0)+1;{{ end }}
-const dk=Object.keys(dates).sort(),dv=dk.map(k=>dates[k]);
-new Chart(document.getElementById('timelineChart'),{type:'line',data:{labels:dk,datasets:[{label:'CVEs',data:dv,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksToShow:10}}}}});
+// Vendors
+const vc={};
+raw.forEach(p=>{if(p.v&&p.v!=='unknown'){vc[p.v]=(vc[p.v]||0)+1}});
+const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
+new Chart(document.getElementById('vendorChart'),{type:'bar',data:{labels:sorted.map(s=>s[0]),datasets:[{label:'CVEs',data:sorted.map(s=>s[1]),backgroundColor:'#3b82f6'}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+
+// Timeline
+const dc={};
+raw.forEach(p=>{dc[p.d]=(dc[p.d]||0)+1});
+const dk=Object.keys(dc).sort(),dv=dk.map(k=>dc[k]);
+new Chart(document.getElementById('timelineChart'),{type:'line',data:{labels:dk,datasets:[{label:'CVEs',data:dv,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:2}]},options:{plugins:{legend:{display:false}}}});
 </script>
 {{ end }}
