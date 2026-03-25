@@ -48,6 +48,7 @@ def fetch_cert_bund():
             severity, cvss = "UNKNOWN", 0.0
             is_update = False
             clean_title = title
+            is_update = False
             for tag in ("NEU", "UPDATE"):
                 if f"[{tag}]" in title:
                     if tag == "UPDATE":
@@ -60,8 +61,6 @@ def fetch_cert_bund():
                     clean_title = re.sub(r'\[' + de + r'\]', '', clean_title, flags=re.IGNORECASE)
                     break
             clean_title = clean_title.strip().strip("-").strip()
-            if is_update:
-                clean_title = "[Update] " + clean_title
 
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")
@@ -71,6 +70,7 @@ def fetch_cert_bund():
             advisories.append({
                 "title": clean_title, "link": link, "desc": desc,
                 "date": date_str, "severity": severity, "cvss": cvss,
+                "is_update": is_update,
             })
     except Exception as e:
         print(f"CERT-Bund fetch failed: {e}")
@@ -157,18 +157,18 @@ def fetch_nvd(kev_ids):
 def process_cert_bund(advisories):
     count = 0
     for adv in advisories:
-        slug = adv["title"].split()[0].replace("[", "").replace("]", "").lower()
-        if not slug:
-            continue
-        slug = f"cb-{slug}"
+        import re as _re
+        raw = adv["title"].split(":")[0].strip() if ":" in adv["title"] else adv["title"].split()[0]
+        slug = "cb-" + _re.sub(r'[^a-z0-9]+', '-', raw.lower()).strip('-')
         desc = safe_yaml(adv["desc"]) if adv["desc"] else "No description available."
         title = adv["title"].replace('"', '\\"')
         severity = adv.get("severity", "UNKNOWN")
         cvss = adv.get("cvss", 0.0)
+        is_update = str(adv.get("is_update", False)).lower()
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
             f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "unknown"\n'
-            f'exploited: false\n'
+            f'exploited: false\nupdate: {is_update}\n'
             f'sources: ["CERT-Bund"]\n'
             f'description: "{title}"\n'
             f'summary: |\n  {desc}\n'

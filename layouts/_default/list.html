@@ -123,6 +123,7 @@
   <div class="cve-header">
     <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
     {{ if .Date.After $yesterday }}<span class="badge badge-new">NEW</span>{{ end }}
+    {{ if .Params.update }}<span class="badge badge-update">UPDATE</span>{{ end }}
     {{ if eq .Params.severity "CRITICAL" }}<span class="badge badge-critical">CRITICAL {{ .Params.cvss }}</span>
     {{ else if eq .Params.severity "HIGH" }}<span class="badge badge-high">HIGH {{ .Params.cvss }}</span>
     {{ else if eq .Params.severity "MEDIUM" }}<span class="badge badge-medium">MEDIUM {{ .Params.cvss }}</span>
