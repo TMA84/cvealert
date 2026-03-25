@@ -1,107 +1,122 @@
 {{ define "main" }}
-{{ $now := now }}
-{{ $week := $now.AddDate 0 0 -7 }}
-{{ $posts := where (where .Site.RegularPages "Section" "posts") ".Date.After" $week }}
-
-{{ $total := len $posts }}
-{{ $critical := 0 }}{{ $high := 0 }}{{ $medium := 0 }}{{ $low := 0 }}
-{{ $exploited := slice }}
-{{ $top := slice }}
-{{ range $posts }}
-  {{ if eq .Params.severity "CRITICAL" }}{{ $critical = add $critical 1 }}{{ end }}
-  {{ if eq .Params.severity "HIGH" }}{{ $high = add $high 1 }}{{ end }}
-  {{ if eq .Params.severity "MEDIUM" }}{{ $medium = add $medium 1 }}{{ end }}
-  {{ if eq .Params.severity "LOW" }}{{ $low = add $low 1 }}{{ end }}
-  {{ if .Params.exploited }}{{ $exploited = $exploited | append . }}{{ end }}
-  {{ if ge .Params.cvss 9.0 }}{{ $top = $top | append . }}{{ end }}
-{{ end }}
+{{ $posts := where .Site.RegularPages "Section" "posts" }}
 
 <a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to CVEs</a>
 
 <div class="digest">
   <header class="digest-header">
-    <h1>Weekly Digest</h1>
-    <p class="digest-period">{{ $week.Format "Jan 02" }} – {{ $now.Format "Jan 02, 2006" }}</p>
-    <p class="digest-subtitle">Auto-generated summary of the past 7 days. Updates on every build.</p>
+    <h1>Security Digest</h1>
+    <div class="digest-tabs">
+      <button class="digest-tab active" data-days="1">Today</button>
+      <button class="digest-tab" data-days="3">3 Days</button>
+      <button class="digest-tab" data-days="7">Week</button>
+      <button class="digest-tab" data-days="14">2 Weeks</button>
+      <button class="digest-tab" data-days="30">Month</button>
+    </div>
   </header>
 
   <div class="digest-stats">
-    <div class="digest-stat">
-      <span class="digest-stat-value">{{ $total }}</span>
-      <span class="digest-stat-label">Total</span>
-    </div>
-    <div class="digest-stat">
-      <span class="digest-stat-value critical">{{ $critical }}</span>
-      <span class="digest-stat-label">Critical</span>
-    </div>
-    <div class="digest-stat">
-      <span class="digest-stat-value high">{{ $high }}</span>
-      <span class="digest-stat-label">High</span>
-    </div>
-    <div class="digest-stat">
-      <span class="digest-stat-value medium">{{ $medium }}</span>
-      <span class="digest-stat-label">Medium</span>
-    </div>
-    <div class="digest-stat">
-      <span class="digest-stat-value low">{{ $low }}</span>
-      <span class="digest-stat-label">Low</span>
-    </div>
+    <div class="digest-stat"><span class="digest-stat-value" id="d-total">0</span><span class="digest-stat-label">Total</span></div>
+    <div class="digest-stat"><span class="digest-stat-value critical" id="d-critical">0</span><span class="digest-stat-label">Critical</span></div>
+    <div class="digest-stat"><span class="digest-stat-value high" id="d-high">0</span><span class="digest-stat-label">High</span></div>
+    <div class="digest-stat"><span class="digest-stat-value medium" id="d-medium">0</span><span class="digest-stat-label">Medium</span></div>
+    <div class="digest-stat"><span class="digest-stat-value low" id="d-low">0</span><span class="digest-stat-label">Low</span></div>
   </div>
 
-  {{ with $exploited }}
-  <section class="digest-section">
-    <h2 class="digest-section-title exploited-title">Actively Exploited ({{ len . }})</h2>
-    <div class="digest-list">
-      {{ range . }}
-      <a href="{{ .RelPermalink }}" class="digest-item exploited-item">
-        <span class="digest-item-id">{{ .Title }}</span>
-        <span class="badge badge-critical">{{ .Params.cvss }}</span>
-        {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
-        <span class="digest-item-desc">{{ .Params.summary | plainify | truncate 80 }}</span>
-      </a>
-      {{ end }}
-    </div>
+  <section class="digest-section" id="sec-exploited" style="display:none">
+    <h2 class="digest-section-title exploited-title">Actively Exploited (<span id="d-exp-count">0</span>)</h2>
+    <div class="digest-list" id="d-exploited"></div>
   </section>
-  {{ end }}
 
-  {{ with $top }}
-  <section class="digest-section">
-    <h2 class="digest-section-title">Critical Vulnerabilities — CVSS ≥ 9.0 ({{ len . }})</h2>
-    <div class="digest-list">
-      {{ range first 20 . }}
-      <a href="{{ .RelPermalink }}" class="digest-item">
-        <div class="digest-item-row">
-          <span class="digest-item-id">{{ .Title }}</span>
-          <span class="badge badge-critical">{{ .Params.cvss }}</span>
-          {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
-          <span class="digest-item-date">{{ .Date.Format "Jan 02" }}</span>
-        </div>
-        <span class="digest-item-desc">{{ .Params.summary | plainify | truncate 120 }}</span>
-      </a>
-      {{ end }}
-    </div>
+  <section class="digest-section" id="sec-critical">
+    <h2 class="digest-section-title">Critical — CVSS ≥ 9.0 (<span id="d-crit-count">0</span>)</h2>
+    <div class="digest-list" id="d-top"></div>
   </section>
-  {{ end }}
 
   <section class="digest-section">
     <h2 class="digest-section-title">Top Affected Vendors</h2>
-    <div id="vendor-list" class="digest-vendors"></div>
+    <div id="d-vendors" class="digest-vendors"></div>
   </section>
 
-  <script id="vendor-data" type="application/json">
-  [{{ range $i, $p := $posts }}{{ if $i }},{{ end }}"{{ .Params.vendor | default "unknown" }}"{{ end }}]
-  </script>
-  <script>
-  const vd=JSON.parse(document.getElementById('vendor-data').textContent);
-  const vc={};vd.forEach(v=>{if(v&&v!=='unknown')vc[v]=(vc[v]||0)+1});
-  const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
-  const el=document.getElementById('vendor-list');
-  sorted.forEach(([name,count])=>{
-    const d=document.createElement('div');d.className='digest-vendor';
-    const pct=Math.round(count/vd.length*100);
-    d.innerHTML=`<span class="digest-vendor-name">${name}</span><div class="digest-vendor-bar"><div class="digest-vendor-fill" style="width:${pct}%"></div></div><span class="digest-vendor-count">${count}</span>`;
-    el.appendChild(d);
-  });
-  </script>
+  <section class="digest-section" id="sec-recent">
+    <h2 class="digest-section-title">Recent High Severity (<span id="d-high-count">0</span>)</h2>
+    <div class="digest-list" id="d-recent"></div>
+  </section>
 </div>
+
+<script id="all-posts" type="application/json">
+[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"t":"{{ .Title }}","d":"{{ .Date.Format "2006-01-02" }}","c":{{ .Params.cvss | default 0 }},"s":"{{ .Params.severity | default "UNKNOWN" }}","v":"{{ .Params.vendor | default "unknown" }}","e":{{ if .Params.exploited }}true{{ else }}false{{ end }},"u":"{{ .RelPermalink }}","desc":"{{ .Params.summary | plainify | truncate 120 | htmlEscape }}"}{{ end }}]
+</script>
+
+<script>
+const all=JSON.parse(document.getElementById('all-posts').textContent);
+
+function render(days){
+  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-days);
+  const iso=cutoff.toISOString().slice(0,10);
+  const filtered=all.filter(p=>p.d>=iso);
+
+  let cr=0,hi=0,me=0,lo=0;
+  const exploited=[],top=[],recent=[],vc={};
+  filtered.forEach(p=>{
+    if(p.s==='CRITICAL')cr++;else if(p.s==='HIGH')hi++;else if(p.s==='MEDIUM')me++;else if(p.s==='LOW')lo++;
+    if(p.e)exploited.push(p);
+    if(p.c>=9)top.push(p);
+    if(p.s==='HIGH'&&p.c>=7)recent.push(p);
+    if(p.v&&p.v!=='unknown')vc[p.v]=(vc[p.v]||0)+1;
+  });
+  top.sort((a,b)=>b.c-a.c);
+  recent.sort((a,b)=>b.c-a.c);
+
+  document.getElementById('d-total').textContent=filtered.length;
+  document.getElementById('d-critical').textContent=cr;
+  document.getElementById('d-high').textContent=hi;
+  document.getElementById('d-medium').textContent=me;
+  document.getElementById('d-low').textContent=lo;
+
+  // Exploited
+  const expEl=document.getElementById('d-exploited');
+  const expSec=document.getElementById('sec-exploited');
+  document.getElementById('d-exp-count').textContent=exploited.length;
+  expEl.innerHTML='';
+  if(exploited.length){expSec.style.display='';exploited.forEach(p=>expEl.innerHTML+=card(p,'exploited-item'))}
+  else expSec.style.display='none';
+
+  // Top critical
+  document.getElementById('d-crit-count').textContent=top.length;
+  const topEl=document.getElementById('d-top');
+  topEl.innerHTML='';
+  top.slice(0,20).forEach(p=>topEl.innerHTML+=card(p));
+
+  // Recent high
+  document.getElementById('d-high-count').textContent=recent.length;
+  const recEl=document.getElementById('d-recent');
+  recEl.innerHTML='';
+  recent.slice(0,15).forEach(p=>recEl.innerHTML+=card(p));
+
+  // Vendors
+  const venEl=document.getElementById('d-vendors');
+  venEl.innerHTML='';
+  const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  const max=sorted[0]?sorted[0][1]:1;
+  sorted.forEach(([n,c])=>{
+    venEl.innerHTML+=`<div class="digest-vendor"><span class="digest-vendor-name">${n}</span><div class="digest-vendor-bar"><div class="digest-vendor-fill" style="width:${Math.round(c/max*100)}%"></div></div><span class="digest-vendor-count">${c}</span></div>`;
+  });
+}
+
+function card(p,cls=''){
+  const vb=p.v&&p.v!=='unknown'?`<span class="badge badge-vendor">${p.v}</span>`:'';
+  return `<a href="${p.u}" class="digest-item ${cls}"><div class="digest-item-row"><span class="digest-item-id">${p.t}</span><span class="badge badge-critical">${p.c}</span>${vb}<span class="digest-item-date">${p.d}</span></div><span class="digest-item-desc">${p.desc}</span></a>`;
+}
+
+document.querySelectorAll('.digest-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.digest-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(parseInt(btn.dataset.days));
+  });
+});
+
+render(7);
+</script>
 {{ end }}

@@ -184,6 +184,10 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .digest-header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: .25rem; }
 .digest-period { font-size: 1.1rem; color: var(--accent2); font-weight: 600; }
 .digest-subtitle { font-size: .85rem; color: var(--text2); margin-top: .25rem; }
+.digest-tabs { display: flex; gap: .25rem; margin-top: .75rem; }
+.digest-tab { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); border-radius: 6px; padding: .4rem .8rem; font-size: .85rem; font-family: inherit; cursor: pointer; transition: all .15s; }
+.digest-tab:hover { border-color: var(--accent); color: var(--text); }
+.digest-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .digest-stats { display: flex; gap: .75rem; margin: 1.5rem 0; flex-wrap: wrap; }
 .digest-stat { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: .75rem 1.25rem; text-align: center; flex: 1; min-width: 80px; }
 .digest-stat-value { display: block; font-size: 1.5rem; font-weight: 700; }
