@@ -5,9 +5,9 @@ layout: "single"
 
 ## 1. Verantwortlicher
 
-Tobias Malcherek
-Gutenbergstraße 15
-65468 Trebur
+Tobias Malcherek<br>
+Gutenbergstraße 15<br>
+65468 Trebur<br>
 E-Mail: email@cvealert.net
 
 ## 2. Hosting
