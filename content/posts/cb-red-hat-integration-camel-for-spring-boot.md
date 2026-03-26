@@ -3,7 +3,7 @@ title: "Red Hat Integration Camel for Spring Boot: Mehrere Schwachstellen"
 date: 2026-03-24T10:20:51+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "red-hat-integration-camel-for-spring-boot"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

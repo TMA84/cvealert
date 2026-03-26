@@ -3,7 +3,7 @@ title: "systemd: Mehrere Schwachstellen"
 date: 2026-03-25T09:51:23+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "systemd"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

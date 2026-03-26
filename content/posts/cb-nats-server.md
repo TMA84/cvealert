@@ -3,7 +3,7 @@ title: "NATS Server: Mehrere Schwachstellen"
 date: 2026-03-25T12:25:50+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "nats-server"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

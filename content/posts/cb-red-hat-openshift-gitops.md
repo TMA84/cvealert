@@ -3,7 +3,7 @@ title: "Red Hat OpenShift GitOps: Mehrere Schwachstellen"
 date: 2026-03-25T10:21:36+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "red-hat-openshift-gitops"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

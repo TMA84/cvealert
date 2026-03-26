@@ -3,7 +3,7 @@ title: "MongoDB C Driver: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-24T11:25:50+00:00
 cvss: 2.5
 severity: "LOW"
-vendor: "unknown"
+vendor: "mongodb-c-driver"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

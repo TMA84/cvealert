@@ -3,7 +3,7 @@ title: "ImageMagick: Mehrere Schwachstellen ermöglichen Denial of Service"
 date: 2026-03-25T12:15:50+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "imagemagick"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

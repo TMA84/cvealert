@@ -3,7 +3,7 @@ title: "Apache Commons: Mehrere Schwachstellen ermöglichen Denial of Service"
 date: 2026-03-24T10:21:21+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "apache-commons"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

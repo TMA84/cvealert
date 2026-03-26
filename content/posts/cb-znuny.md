@@ -3,7 +3,7 @@ title: "Znuny: Schwachstelle ermöglicht Cross-Site Scripting"
 date: 2026-03-24T10:35:57+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "znuny"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

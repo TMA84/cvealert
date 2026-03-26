@@ -3,7 +3,7 @@ title: "Apple macOS Tahoe, Sequoia und Sonoma: Mehrere Schwachstellen"
 date: 2026-03-25T09:46:10+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "apple-macos-tahoe,-sequoia-und-sonoma"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

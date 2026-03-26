@@ -3,7 +3,7 @@ title: "util-linux: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrunge
 date: 2026-03-25T09:51:24+00:00
 cvss: 2.5
 severity: "LOW"
-vendor: "unknown"
+vendor: "util-linux"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

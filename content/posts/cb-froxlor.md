@@ -3,7 +3,7 @@ title: "Froxlor: Schwachstelle ermöglicht Manipulation von Dateien und Offenleg
 date: 2026-03-25T09:46:08+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "froxlor"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

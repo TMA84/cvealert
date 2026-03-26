@@ -3,7 +3,7 @@ title: "Oracle MySQL: Mehrere Schwachstellen"
 date: 2026-03-25T10:23:32+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "oracle-mysql"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

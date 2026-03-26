@@ -3,7 +3,7 @@ title: "Apache Tomcat und Tomcat Native: Mehrere Schwachstellen"
 date: 2026-03-24T10:17:58+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "apache-tomcat-und-tomcat-native"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

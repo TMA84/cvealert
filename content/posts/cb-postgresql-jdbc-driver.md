@@ -3,7 +3,7 @@ title: "PostgreSQL JDBC Driver: Schwachstelle ermöglicht SQL-Injection"
 date: 2026-03-24T10:21:21+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "postgresql-jdbc-driver"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -3,7 +3,7 @@ title: "Ruby on Rails: Mehrere Schwachstellen"
 date: 2026-03-24T12:11:03+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "ruby-on-rails"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

@@ -62,6 +62,11 @@ def fetch_cert_bund():
                     break
             clean_title = clean_title.strip().strip("-").strip()
 
+            # Extract vendor from title (text before first colon)
+            vendor = "unknown"
+            if ":" in clean_title:
+                vendor = clean_title.split(":")[0].strip().lower().replace(" ", "-")
+
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")
                 date_str = dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
@@ -70,7 +75,7 @@ def fetch_cert_bund():
             advisories.append({
                 "title": clean_title, "link": link, "desc": desc,
                 "date": date_str, "severity": severity, "cvss": cvss,
-                "is_update": is_update,
+                "is_update": is_update, "vendor": vendor,
             })
     except Exception as e:
         print(f"CERT-Bund fetch failed: {e}")
@@ -165,9 +170,10 @@ def process_cert_bund(advisories):
         severity = adv.get("severity", "UNKNOWN")
         cvss = adv.get("cvss", 0.0)
         is_update = str(adv.get("is_update", False)).lower()
+        vendor = adv.get("vendor", "unknown")
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
-            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "unknown"\n'
+            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
             f'exploited: false\nupdate: {is_update}\n'
             f'sources: ["CERT-Bund"]\n'
             f'description: "{title}"\n'

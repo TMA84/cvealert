@@ -3,7 +3,7 @@ title: "Apple macOS: Mehrere Schwachstellen"
 date: 2026-03-25T12:21:01+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "apple-macos"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

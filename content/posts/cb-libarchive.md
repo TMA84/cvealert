@@ -3,7 +3,7 @@ title: "libarchive: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-25T11:46:01+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "libarchive"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

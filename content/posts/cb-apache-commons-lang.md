@@ -3,7 +3,7 @@ title: "Apache Commons Lang: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-24T10:17:52+00:00
 cvss: 2.5
 severity: "LOW"
-vendor: "unknown"
+vendor: "apache-commons-lang"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

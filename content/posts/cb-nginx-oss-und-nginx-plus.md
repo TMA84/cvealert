@@ -3,7 +3,7 @@ title: "NGINX OSS und NGINX Plus: Schwachstelle ermöglicht Manipulation von Dat
 date: 2026-03-25T10:24:00+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "nginx-oss-und-nginx-plus"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

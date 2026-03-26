@@ -3,7 +3,7 @@ title: "IBM WebSphere Application Server: Schwachstelle ermöglicht Cross-Site S
 date: 2026-03-25T10:22:34+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "ibm-websphere-application-server"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -3,7 +3,7 @@ title: "Red Hat Enterprise Linux (389-ds-base): Schwachstelle ermöglicht Codeau
 date: 2026-03-25T09:51:23+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "red-hat-enterprise-linux-(389-ds-base)"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

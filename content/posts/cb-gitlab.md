@@ -3,7 +3,7 @@ title: "GitLab: Mehrere Schwachstellen"
 date: 2026-03-25T11:55:59+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "gitlab"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

@@ -3,7 +3,7 @@ title: "Xen: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen"
 date: 2026-03-25T12:21:01+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "xen"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

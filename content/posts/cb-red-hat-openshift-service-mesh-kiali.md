@@ -3,7 +3,7 @@ title: "Red Hat OpenShift Service Mesh (Kiali): Schwachstelle ermöglicht Denial
 date: 2026-03-25T09:51:22+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "red-hat-openshift-service-mesh-(kiali)"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

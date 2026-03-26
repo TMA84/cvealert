@@ -3,7 +3,7 @@ title: "GnuTLS: Mehrere Schwachstellen ermöglichen Denial of Service"
 date: 2026-03-25T10:24:23+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "gnutls"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

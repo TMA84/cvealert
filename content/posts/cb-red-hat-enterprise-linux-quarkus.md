@@ -3,7 +3,7 @@ title: "Red Hat Enterprise Linux (Quarkus): Mehrere Schwachstellen"
 date: 2026-03-24T10:17:56+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "red-hat-enterprise-linux-(quarkus)"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

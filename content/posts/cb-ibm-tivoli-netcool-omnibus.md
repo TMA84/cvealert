@@ -3,7 +3,7 @@ title: "IBM Tivoli Netcool/OMNIbus: Mehrere Schwachstellen"
 date: 2026-03-25T10:21:05+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "ibm-tivoli-netcool/omnibus"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

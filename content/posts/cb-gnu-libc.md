@@ -3,7 +3,7 @@ title: "GNU libc: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-24T12:40:51+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "gnu-libc"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

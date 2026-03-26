@@ -3,7 +3,7 @@ title: "Eclipse Jetty: Mehrere Schwachstellen ermöglichen Denial of Service"
 date: 2026-03-24T10:20:56+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "eclipse-jetty"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

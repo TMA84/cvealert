@@ -3,7 +3,7 @@ title: "Python: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen"
 date: 2026-03-25T10:22:29+00:00
 cvss: 2.5
 severity: "LOW"
-vendor: "unknown"
+vendor: "python"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

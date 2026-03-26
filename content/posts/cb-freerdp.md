@@ -3,7 +3,7 @@ title: "FreeRDP: Mehrere Schwachstellen"
 date: 2026-03-24T10:17:27+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "freerdp"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

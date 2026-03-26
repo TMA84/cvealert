@@ -3,7 +3,7 @@ title: "strongSwan: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-24T10:30:55+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "unknown"
+vendor: "strongswan"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

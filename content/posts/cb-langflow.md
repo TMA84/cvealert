@@ -3,7 +3,7 @@ title: "Langflow: Schwachstelle ermöglicht Codeausführung"
 date: 2026-03-25T11:21:02+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "unknown"
+vendor: "langflow"
 exploited: false
 update: false
 sources: ["CERT-Bund"]
