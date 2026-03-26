@@ -1,0 +1,74 @@
+{{ define "main" }}
+<a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to CVEs</a>
+
+<div class="feeds-page">
+  <h1>RSS Feeds</h1>
+  <p class="feeds-intro">Subscribe to vulnerability updates using your favorite RSS reader. Filter by vendor or product to only receive what matters to you.</p>
+
+  <section class="feeds-section">
+    <h2>Global Feed</h2>
+    <p>All CVEs from all sources:</p>
+    <div class="feed-url-box">
+      <code>{{ "index.xml" | absURL }}</code>
+    </div>
+  </section>
+
+  <section class="feeds-section">
+    <h2>Per-Vendor Feeds</h2>
+    <p>Only receive CVEs from a specific vendor:</p>
+    <div class="feed-url-box">
+      <code>{{ "vendors" | absURL }}/<strong>&lt;vendor&gt;</strong>/index.xml</code>
+    </div>
+    <div class="feeds-examples">
+      {{ with .Site.Taxonomies.vendors }}
+      {{ range first 12 .ByCount }}
+      <a href="{{ .Page.RelPermalink }}" class="feed-chip">
+        <span>{{ .Page.Title }}</span>
+        <span class="feed-chip-count">{{ .Count }}</span>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+    <p class="feeds-browse"><a href="{{ "vendors/" | relURL }}">Browse all vendors →</a></p>
+  </section>
+
+  <section class="feeds-section">
+    <h2>Per-Product Feeds</h2>
+    <p>Only receive CVEs for a specific product:</p>
+    <div class="feed-url-box">
+      <code>{{ "products" | absURL }}/<strong>&lt;product&gt;</strong>/index.xml</code>
+    </div>
+    <div class="feeds-examples">
+      {{ with .Site.Taxonomies.products }}
+      {{ range first 12 .ByCount }}
+      <a href="{{ .Page.RelPermalink }}" class="feed-chip">
+        <span>{{ .Page.Title }}</span>
+        <span class="feed-chip-count">{{ .Count }}</span>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+    <p class="feeds-browse"><a href="{{ "products/" | relURL }}">Browse all products →</a></p>
+  </section>
+
+  <section class="feeds-section">
+    <h2>How to Subscribe</h2>
+    <div class="feeds-steps">
+      <div class="feeds-step"><span class="step-num">1</span><span>Go to a vendor or product page and copy the RSS feed URL</span></div>
+      <div class="feeds-step"><span class="step-num">2</span><span>Open your RSS reader (Feedly, Thunderbird, Outlook, etc.)</span></div>
+      <div class="feeds-step"><span class="step-num">3</span><span>Add a new feed and paste the URL</span></div>
+      <div class="feeds-step"><span class="step-num">4</span><span>Receive updates every time new CVEs are published</span></div>
+    </div>
+  </section>
+
+  <section class="feeds-section">
+    <h2>Update Frequency</h2>
+    <p>Feeds are updated every <strong>3 hours</strong> with new CVEs from:</p>
+    <ul class="feeds-sources">
+      <li><strong>NVD</strong> — National Vulnerability Database</li>
+      <li><strong>CISA KEV</strong> — Known Exploited Vulnerabilities</li>
+      <li><strong>CERT-Bund</strong> — German Federal Office for Information Security</li>
+    </ul>
+  </section>
+</div>
+{{ end }}

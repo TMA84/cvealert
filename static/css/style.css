@@ -190,6 +190,27 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .stats-src.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr; } }
 
+/* Feeds page */
+.feeds-page { max-width: 800px; }
+.feeds-page h1 { font-size: 1.6rem; font-weight: 700; margin: 1.5rem 0 .5rem; }
+.feeds-intro { color: var(--text2); margin-bottom: 2rem; line-height: 1.6; }
+.feeds-section { margin: 2rem 0; }
+.feeds-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
+.feeds-section p { color: var(--text2); font-size: .9rem; line-height: 1.6; margin-bottom: .5rem; }
+.feed-url-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; margin: .75rem 0; font-family: monospace; font-size: .85rem; overflow-x: auto; }
+.feed-url-box strong { color: var(--accent2); }
+.feeds-examples { display: flex; flex-wrap: wrap; gap: .4rem; margin: .75rem 0; }
+.feed-chip { display: inline-flex; align-items: center; gap: .4rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: .3rem .6rem; text-decoration: none; font-size: .8rem; color: var(--accent2); transition: all .15s; }
+.feed-chip:hover { border-color: var(--accent); }
+.feed-chip-count { background: var(--bg3); color: var(--text2); font-size: .7rem; padding: .05rem .35rem; border-radius: 8px; }
+.feeds-browse { margin-top: .5rem; }
+.feeds-browse a { color: var(--accent2); font-size: .85rem; }
+.feeds-steps { display: flex; flex-direction: column; gap: .5rem; margin: .75rem 0; }
+.feeds-step { display: flex; align-items: center; gap: .75rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .65rem 1rem; font-size: .9rem; color: var(--text2); }
+.step-num { background: var(--accent); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; flex-shrink: 0; }
+.feeds-sources { padding-left: 1.25rem; color: var(--text2); font-size: .9rem; }
+.feeds-sources li { margin: .4rem 0; }
+
 /* Taxonomy */
 .taxonomy-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .taxonomy-item { display: flex; align-items: center; gap: .5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .5rem .85rem; text-decoration: none; transition: all .15s; }

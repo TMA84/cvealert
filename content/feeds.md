@@ -1,6 +1,6 @@
 ---
-title: "RSS Feeds Documentation"
-layout: "single"
+title: "RSS Feeds"
+layout: "feeds"
 ---
 
 ## RSS Feeds
