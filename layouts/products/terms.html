@@ -3,7 +3,7 @@
 <h1 style="margin:1.5rem 0 .5rem">All Products</h1>
 <p class="digest-subtitle">Click a product to see all CVEs and subscribe to their RSS feed.</p>
 <div class="taxonomy-list">
-{{ range .Pages.ByCount }}
+{{ range .Data.Terms.ByCount }}
 <a href="{{ .Page.RelPermalink }}" class="taxonomy-item">
   <span class="taxonomy-name">{{ .Page.Title }}</span>
   <span class="taxonomy-count">{{ .Count }}</span>
