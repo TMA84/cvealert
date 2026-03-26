@@ -3,7 +3,8 @@ title: "Citrix Systems NetScaler: Mehrere Schwachstellen"
 date: 2026-03-24T12:36:02+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "citrix-systems"
+vendor: "citrix"
+product: "systems"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

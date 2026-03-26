@@ -4,6 +4,7 @@ date: 2026-03-26T07:56:08+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "xen"
+product: "xen"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

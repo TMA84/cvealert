@@ -43,6 +43,13 @@
       </div>
     </div>
     <div class="filter-group">
+      <label>Product</label>
+      <div class="multi-select" id="product-ms" data-filter="product">
+        <button class="ms-toggle" type="button">All</button>
+        <div class="ms-dropdown" id="product-options"></div>
+      </div>
+    </div>
+    <div class="filter-group">
       <label>Source</label>
       <div class="multi-select" id="source-ms" data-filter="source">
         <button class="ms-toggle" type="button">All</button>
@@ -119,7 +126,7 @@
 
 <div class="cve-list" id="posts">
 {{ range $posts }}
-<article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-source="{{ delimit (.Params.sources | default (slice "NVD")) "," }}" data-exploited="{{ .Params.exploited | default false }}" data-new="{{ if .Date.After $yesterday }}true{{ else }}false{{ end }}" data-text="{{ .Title | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
+<article class="cve-card" data-severity="{{ .Params.severity }}" data-date="{{ .Date.Format "2006-01-02" }}" data-cvss="{{ .Params.cvss }}" data-vendor="{{ .Params.vendor | default "unknown" }}" data-product="{{ .Params.product | default "unknown" }}" data-source="{{ delimit (.Params.sources | default (slice "NVD")) "," }}" data-exploited="{{ .Params.exploited | default false }}" data-new="{{ if .Date.After $yesterday }}true{{ else }}false{{ end }}" data-text="{{ .Title | lower }} {{ .Params.vendor | default "" | lower }}" data-title="{{ .Title }}">
   <div class="cve-header">
     <a href="{{ .RelPermalink }}" class="cve-id">{{ .Title }}</a>
     {{ if .Date.After $yesterday }}<span class="badge badge-new">NEW</span>{{ end }}
@@ -130,6 +137,7 @@
     {{ else }}<span class="badge badge-low">{{ .Params.severity }} {{ .Params.cvss }}</span>{{ end }}
     {{ if .Params.exploited }}<span class="badge badge-exploited"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Exploited</span>{{ end }}
     {{ with .Params.vendor }}{{ if ne . "unknown" }}<span class="badge badge-vendor">{{ . }}</span>{{ end }}{{ end }}
+    {{ with .Params.product }}{{ if and (ne . "unknown") (ne . $.Params.vendor) }}<span class="badge badge-product">{{ . }}</span>{{ end }}{{ end }}
     {{ range .Params.sources }}<span class="badge badge-source">{{ . }}{{ if eq . "CERT-Bund" }} (DE){{ end }}</span>{{ end }}
     <span class="cve-date">{{ .Date.Format "2006-01-02" }}</span>
   </div>
@@ -151,20 +159,20 @@ function updateToggle(el){const checked=getChecked(el.id);el.querySelector('.ms-
 function saveState(){
   const state={};
   fields.forEach(id=>{const v=document.getElementById(id).value;if(v)state[id]=v});
-  ['severity-ms','vendor-ms','source-ms'].forEach(id=>{const v=getChecked(id);if(v.length)state[id]=v});
+  ['severity-ms','vendor-ms','product-ms','source-ms'].forEach(id=>{const v=getChecked(id);if(v.length)state[id]=v});
   sessionStorage.setItem(STORE_KEY,JSON.stringify(state));
 }
 function loadState(){
   try{
     const state=JSON.parse(sessionStorage.getItem(STORE_KEY)||'{}');
     fields.forEach(id=>{if(state[id])document.getElementById(id).value=state[id]});
-    ['severity-ms','vendor-ms','source-ms'].forEach(id=>{if(state[id]){setChecked(id,state[id]);updateToggle(document.getElementById(id))}});
+    ['severity-ms','vendor-ms','product-ms','source-ms'].forEach(id=>{if(state[id]){setChecked(id,state[id]);updateToggle(document.getElementById(id))}});
   }catch(e){}
 }
 
 function filter(){
   const q=$('#search').value.toLowerCase();
-  const sevs=getChecked('severity-ms'),vens=getChecked('vendor-ms'),srcs=getChecked('source-ms');
+  const sevs=getChecked('severity-ms'),vens=getChecked('vendor-ms'),prods=getChecked('product-ms'),srcs=getChecked('source-ms');
   const nw=$('#newonly').value,from=$('#date-from').value,to=$('#date-to').value;
   const activeTab=document.querySelector('.time-tab.active');
   const days=activeTab?parseInt(activeTab.dataset.days):0;
@@ -176,6 +184,7 @@ function filter(){
     const show=(!q||text.includes(q))
       &&(!sevs.length||sevs.includes(p.dataset.severity))
       &&(!vens.length||vens.some(v=>p.dataset.vendor.split(', ').includes(v)))
+      &&(!prods.length||prods.some(v=>p.dataset.product.split(', ').includes(v)))
       &&(!srcs.length||srcs.some(s=>p.dataset.source.split(',').includes(s)))
       &&(!nw||p.dataset.new==='true')
       &&(!cutoff||p.dataset.date>=cutoff)
@@ -200,6 +209,10 @@ const vs=new Set();posts.forEach(p=>p.dataset.vendor.split(', ').forEach(v=>{if(
 const vOpts=document.getElementById('vendor-options');
 [...vs].sort().forEach(v=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+v+'"> '+v;vOpts.appendChild(l)});
 document.querySelectorAll('#vendor-ms input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(document.getElementById('vendor-ms'));filter()}));
+const ps=new Set();posts.forEach(p=>p.dataset.product.split(', ').forEach(v=>{if(v&&v!=='unknown')ps.add(v)}));
+const pOpts=document.getElementById('product-options');
+[...ps].sort().forEach(v=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+v+'"> '+v;pOpts.appendChild(l)});
+document.querySelectorAll('#product-ms input').forEach(cb=>cb.addEventListener('change',()=>{updateToggle(document.getElementById('product-ms'));filter()}));
 loadState();sort();filter();
 
 // Keyboard shortcuts

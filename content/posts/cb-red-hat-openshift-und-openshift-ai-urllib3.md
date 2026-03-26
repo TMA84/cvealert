@@ -4,6 +4,7 @@ date: 2026-03-26T08:05:54+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"
+product: "openshift"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

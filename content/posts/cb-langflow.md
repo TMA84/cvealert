@@ -4,6 +4,7 @@ date: 2026-03-25T11:21:02+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "langflow"
+product: "langflow"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

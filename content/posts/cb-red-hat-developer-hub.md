@@ -4,6 +4,7 @@ date: 2026-03-25T10:23:28+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"
+product: "developer"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

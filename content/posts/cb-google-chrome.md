@@ -3,7 +3,8 @@ title: "Google Chrome: Mehrere Schwachstellen"
 date: 2026-03-25T11:46:02+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "google-chrome"
+vendor: "google"
+product: "chrome"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

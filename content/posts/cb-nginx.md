@@ -4,6 +4,7 @@ date: 2026-03-25T10:21:03+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "nginx"
+product: "nginx"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -4,6 +4,7 @@ date: 2026-03-24T10:20:51+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "red-hat"
+product: "integration"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

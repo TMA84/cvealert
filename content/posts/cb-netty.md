@@ -4,6 +4,7 @@ date: 2026-03-25T11:55:59+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "netty"
+product: "netty"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

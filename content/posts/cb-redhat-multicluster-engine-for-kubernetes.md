@@ -3,7 +3,8 @@ title: "RedHat Multicluster Engine for Kubernetes: Schwachstelle ermöglicht Pri
 date: 2026-03-25T10:22:04+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "redhat-multicluster"
+vendor: "redhat"
+product: "multicluster"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

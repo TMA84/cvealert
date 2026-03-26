@@ -4,6 +4,7 @@ date: 2026-03-25T10:24:02+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "vim"
+product: "vim"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

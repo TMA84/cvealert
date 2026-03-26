@@ -4,6 +4,7 @@ date: 2026-03-25T09:46:06+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "gstreamer"
+product: "gstreamer"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

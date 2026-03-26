@@ -3,7 +3,8 @@ title: "http/2 Implementierungen: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-25T10:21:08+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "http/2-implementierungen"
+vendor: "http/2"
+product: "implementierungen"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

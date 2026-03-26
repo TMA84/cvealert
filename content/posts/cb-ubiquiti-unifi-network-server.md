@@ -3,7 +3,8 @@ title: "Ubiquiti UniFi Network Server: Schwachstelle ermöglicht Umgehen von Sic
 date: 2026-03-25T11:10:50+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "ubiquiti-unifi"
+vendor: "ubiquiti"
+product: "unifi"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

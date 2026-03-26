@@ -4,6 +4,7 @@ date: 2026-03-26T07:56:05+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "systemd"
+product: "systemd"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

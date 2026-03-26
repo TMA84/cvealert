@@ -4,6 +4,7 @@ date: 2026-03-25T11:50:49+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "node.js"
+product: "node.js"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

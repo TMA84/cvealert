@@ -3,7 +3,8 @@ title: "IBM QRadar SIEM: Mehrere Schwachstellen"
 date: 2026-03-26T08:00:56+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "ibm-qradar"
+vendor: "ibm"
+product: "qradar"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

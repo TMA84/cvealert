@@ -3,7 +3,8 @@ title: "cPanel cPanel/WHM: Mehrere Schwachstellen"
 date: 2026-03-24T12:11:04+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "cpanel-cpanel/whm"
+vendor: "cpanel"
+product: "cpanel/whm"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

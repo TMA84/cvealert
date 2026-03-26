@@ -3,7 +3,8 @@ title: "vim (.tar and .zip): Mehrere Schwachstellen ermöglichen Codeausführung
 date: 2026-03-25T10:23:56+00:00
 cvss: 2.5
 severity: "LOW"
-vendor: "vim-(.tar"
+vendor: "vim"
+product: "(.tar"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

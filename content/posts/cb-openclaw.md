@@ -4,6 +4,7 @@ date: 2026-03-25T12:25:49+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "openclaw"
+product: "openclaw"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

@@ -4,6 +4,7 @@ date: 2026-03-25T09:51:19+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "checkmk"
+product: "checkmk"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -4,6 +4,7 @@ date: 2026-03-24T10:21:19+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "logback"
+product: "logback"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

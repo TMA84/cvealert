@@ -3,7 +3,8 @@ title: "Dell Secure Connect Gateway: Mehrere Schwachstellen ermöglichen nicht s
 date: 2026-03-25T10:23:29+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "dell-secure"
+vendor: "dell"
+product: "secure"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

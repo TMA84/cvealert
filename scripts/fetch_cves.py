@@ -62,20 +62,36 @@ def fetch_cert_bund():
                     break
             clean_title = clean_title.strip().strip("-").strip()
 
-            # Extract vendor from title (text before first colon, simplified)
+            # Extract vendor and product from title (text before first colon)
             vendor = "unknown"
+            product = "unknown"
             if ":" in clean_title:
                 raw_vendor = clean_title.split(":")[0].strip()
-                # Take first meaningful word(s), drop "und", version info etc.
                 parts = raw_vendor.split()
-                short = []
+                clean_parts = []
                 for p in parts:
                     if p.lower() in ("und", "for", "mit", "-"):
                         break
-                    short.append(p)
-                    if len(short) >= 2:
+                    clean_parts.append(p.rstrip(",-"))
+                # Known multi-word vendors
+                multi = {"red hat", "ibm websphere", "apple ios", "apple macos", "net snmp", "vmware tanzu"}
+                lower_joined = " ".join(clean_parts).lower()
+                matched = False
+                for m in multi:
+                    if lower_joined.startswith(m):
+                        mparts = m.split()
+                        vendor = "-".join(mparts)
+                        rest = clean_parts[len(mparts):]
+                        product = rest[0].lower() if rest else vendor
+                        matched = True
                         break
-                vendor = "-".join(short).lower().rstrip(",-") if short else "unknown"
+                if not matched:
+                    if len(clean_parts) >= 2:
+                        vendor = clean_parts[0].lower()
+                        product = clean_parts[1].lower()
+                    elif len(clean_parts) == 1:
+                        vendor = clean_parts[0].lower()
+                        product = vendor
 
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")
@@ -85,7 +101,7 @@ def fetch_cert_bund():
             advisories.append({
                 "title": clean_title, "link": link, "desc": desc,
                 "date": date_str, "severity": severity, "cvss": cvss,
-                "is_update": is_update, "vendor": vendor,
+                "is_update": is_update, "vendor": vendor, "product": product,
             })
     except Exception as e:
         print(f"CERT-Bund fetch failed: {e}")
@@ -137,13 +153,16 @@ def fetch_nvd(kev_ids):
             patches = [r["url"] for r in all_refs if "Patch" in r.get("tags", [])][:3]
             advisories = [r["url"] for r in all_refs if "Vendor Advisory" in r.get("tags", [])][:3]
             vendors = set()
+            products = set()
             for conf in cve.get("configurations", []):
                 for node in conf.get("nodes", []):
                     for match in node.get("cpeMatch", []):
                         parts = match.get("criteria", "").split(":")
                         if len(parts) >= 5:
                             vendors.add(parts[3])
+                            products.add(parts[4])
             vendor = ", ".join(sorted(vendors)) if vendors else "unknown"
+            product = ", ".join(sorted(products)) if products else "unknown"
             date = cve.get("published", datetime.now(timezone.utc).isoformat())
             exploited = cve_id in kev_ids
             sources = ["NVD"]
@@ -151,7 +170,7 @@ def fetch_nvd(kev_ids):
                 sources.append("CISA KEV")
             front = (
                 f'---\ntitle: "{cve_id}"\ndate: {date}\n'
-                f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
+                f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
                 f'exploited: {str(exploited).lower()}\n'
                 f'sources: {json.dumps(sources)}\n'
                 f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
@@ -181,9 +200,10 @@ def process_cert_bund(advisories):
         cvss = adv.get("cvss", 0.0)
         is_update = str(adv.get("is_update", False)).lower()
         vendor = adv.get("vendor", "unknown")
+        product = adv.get("product", "unknown")
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
-            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\n'
+            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
             f'exploited: false\nupdate: {is_update}\n'
             f'sources: ["CERT-Bund"]\n'
             f'description: "{title}"\n'

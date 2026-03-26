@@ -4,6 +4,7 @@ date: 2026-03-25T12:15:50+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "imagemagick"
+product: "imagemagick"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

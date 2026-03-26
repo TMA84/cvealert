@@ -4,6 +4,7 @@ date: 2026-03-24T12:36:03+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "qemu"
+product: "qemu"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

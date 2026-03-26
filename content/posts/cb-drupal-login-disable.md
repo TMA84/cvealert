@@ -3,7 +3,8 @@ title: "Drupal (Login Disable): Schwachstelle ermöglicht Umgehen von Sicherheit
 date: 2026-03-26T08:06:19+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "drupal-(login"
+vendor: "drupal"
+product: "(login"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

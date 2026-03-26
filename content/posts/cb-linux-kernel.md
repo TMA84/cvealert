@@ -3,7 +3,8 @@ title: "Linux Kernel: Mehrere Schwachstellen"
 date: 2026-03-26T08:06:50+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "linux-kernel"
+vendor: "linux"
+product: "kernel"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

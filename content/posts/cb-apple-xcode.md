@@ -3,7 +3,8 @@ title: "Apple Xcode: Mehrere Schwachstellen"
 date: 2026-03-25T12:30:49+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "apple-xcode"
+vendor: "apple"
+product: "xcode"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

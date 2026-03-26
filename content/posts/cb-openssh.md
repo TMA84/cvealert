@@ -4,6 +4,7 @@ date: 2026-03-24T10:30:51+00:00
 cvss: 2.5
 severity: "LOW"
 vendor: "openssh"
+product: "openssh"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

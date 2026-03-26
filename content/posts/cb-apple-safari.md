@@ -3,7 +3,8 @@ title: "Apple Safari: Mehrere Schwachstellen"
 date: 2026-03-25T12:11:00+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "apple-safari"
+vendor: "apple"
+product: "safari"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

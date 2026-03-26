@@ -3,7 +3,8 @@ title: "[UNGEPATCHT]  Red Hat Undertow: Schwachstelle ermöglicht Denial of Serv
 date: 2026-03-24T11:40:50+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "[ungepatcht]-red"
+vendor: "[ungepatcht]"
+product: "red"
 exploited: false
 update: false
 sources: ["CERT-Bund"]
