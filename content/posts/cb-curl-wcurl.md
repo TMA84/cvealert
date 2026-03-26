@@ -4,7 +4,7 @@ date: 2026-03-24T10:25:51+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "curl"
-product: "(wcurl)"
+product: "wcurl"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

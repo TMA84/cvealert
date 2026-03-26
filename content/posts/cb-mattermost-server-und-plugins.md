@@ -4,7 +4,7 @@ date: 2026-03-26T08:00:50+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "mattermost"
-product: "server"
+product: "mattermost"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -4,7 +4,7 @@ date: 2026-03-25T10:22:34+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "ibm-websphere"
-product: "application"
+product: "ibm-websphere"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

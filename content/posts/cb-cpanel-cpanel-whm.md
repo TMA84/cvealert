@@ -4,7 +4,7 @@ date: 2026-03-24T12:11:04+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "cpanel"
-product: "cpanel/whm"
+product: "cpanel"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

@@ -4,7 +4,7 @@ date: 2026-03-25T10:23:56+00:00
 cvss: 2.5
 severity: "LOW"
 vendor: "vim"
-product: "(.tar"
+product: "tar"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

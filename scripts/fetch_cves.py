@@ -72,7 +72,8 @@ def fetch_cert_bund():
                 for p in parts:
                     if p.lower() in ("und", "for", "mit", "-"):
                         break
-                    clean_parts.append(p.rstrip(",-"))
+                    clean_parts.append(p.rstrip(",-").strip("().").strip())
+                clean_parts = [c for c in clean_parts if c and len(c) > 2 and not any(x in c for x in "/\\") and c.lower() not in ("api-funktionen", "app", "developer", "server", "application", "module", "plugin")]
                 # Known multi-word vendors
                 multi = {"red hat", "ibm websphere", "apple ios", "apple macos", "net snmp", "vmware tanzu"}
                 lower_joined = " ".join(clean_parts).lower()

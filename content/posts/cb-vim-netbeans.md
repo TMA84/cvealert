@@ -4,7 +4,7 @@ date: 2026-03-25T09:50:56+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "vim"
-product: "(netbeans)"
+product: "netbeans"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -1,6 +1,6 @@
 ---
 title: "Red Hat OpenShift (github.com/sirupsen/logrus): Schwachstelle ermöglicht Denial of Service"
-date: 2026-03-26T08:00:54+00:00
+date: 2026-03-26T08:48:01+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"

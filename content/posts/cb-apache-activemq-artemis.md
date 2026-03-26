@@ -4,7 +4,7 @@ date: 2026-03-25T09:50:53+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "apache"
-product: "activemq/artemis"
+product: "apache"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

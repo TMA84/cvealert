@@ -4,7 +4,7 @@ date: 2026-03-24T12:11:03+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "ruby"
-product: "on"
+product: "rails"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

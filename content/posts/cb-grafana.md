@@ -1,15 +1,15 @@
 ---
-title: "Grafana: Mehrere Schwachstellen"
-date: 2026-03-26T08:06:23+00:00
-cvss: 5.0
-severity: "MEDIUM"
+title: "Grafana: Schwachstelle ermöglicht Offenlegung von Informationen"
+date: 2026-03-26T08:46:26+00:00
+cvss: 2.5
+severity: "LOW"
 vendor: "grafana"
 product: "grafana"
 exploited: false
 update: true
 sources: ["CERT-Bund"]
-description: "Grafana: Mehrere Schwachstellen"
+description: "Grafana: Schwachstelle ermöglicht Offenlegung von Informationen"
 summary: |
-  Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in Grafana ausnutzen, um einen Cross-Site Scripting Angriff durchzuführen oder Informationen offenzulegen.
-references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0405"]
+  Ein authentisierter Angreifer kann eine Schwachstelle in Grafana ausnutzen, um Informationen offenzulegen.
+references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2025-1327"]
 ---

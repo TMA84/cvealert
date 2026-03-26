@@ -4,7 +4,7 @@ date: 2026-03-26T08:06:22+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "drupal"
-product: "module"
+product: "icons"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

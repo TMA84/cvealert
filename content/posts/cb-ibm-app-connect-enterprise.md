@@ -4,7 +4,7 @@ date: 2026-03-25T10:23:59+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "ibm"
-product: "app"
+product: "connect"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

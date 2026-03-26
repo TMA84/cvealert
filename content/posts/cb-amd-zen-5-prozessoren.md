@@ -1,6 +1,6 @@
 ---
 title: "AMD “Zen 5” Prozessoren: Schwachstelle gefährdet Vertraulichkeit und Integrität"
-date: 2026-03-24T10:31:18+00:00
+date: 2026-03-26T08:47:55+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "amd"
