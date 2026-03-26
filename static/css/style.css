@@ -182,6 +182,11 @@ header .container { display: flex; align-items: center; justify-content: space-b
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .stats-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
 .stats-card h2 { font-size: 1rem; margin-bottom: 1rem; color: var(--text); }
+.stats-filter { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+.stats-filter label { font-size: .85rem; color: var(--text2); }
+.stats-src { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); border-radius: 6px; padding: .35rem .7rem; font-size: .8rem; font-family: inherit; cursor: pointer; transition: all .15s; }
+.stats-src:hover { border-color: var(--accent); color: var(--text); }
+.stats-src.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr; } }
 
 /* Digest */

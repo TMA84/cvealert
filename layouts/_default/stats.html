@@ -1,17 +1,17 @@
 {{ define "main" }}
 {{ $posts := where .Site.RegularPages "Section" "posts" }}
-{{ $critical := 0 }}{{ $high := 0 }}{{ $medium := 0 }}{{ $low := 0 }}{{ $unknown := 0 }}
-{{ range $posts }}
-  {{ if eq .Params.severity "CRITICAL" }}{{ $critical = add $critical 1 }}
-  {{ else if eq .Params.severity "HIGH" }}{{ $high = add $high 1 }}
-  {{ else if eq .Params.severity "MEDIUM" }}{{ $medium = add $medium 1 }}
-  {{ else if eq .Params.severity "LOW" }}{{ $low = add $low 1 }}
-  {{ else }}{{ $unknown = add $unknown 1 }}{{ end }}
-{{ end }}
 
 <a href="{{ .Site.Home.RelPermalink }}" class="back-link">← Back to CVEs</a>
 
-<h1 style="margin:1.5rem 0 1rem">Statistics</h1>
+<h1 style="margin:1.5rem 0 .5rem">Statistics</h1>
+
+<div class="stats-filter">
+  <label>Source:</label>
+  <button class="stats-src active" data-src="">All</button>
+  <button class="stats-src" data-src="NVD">NVD</button>
+  <button class="stats-src" data-src="CISA KEV">CISA KEV</button>
+  <button class="stats-src" data-src="CERT-Bund">CERT-Bund</button>
+</div>
 
 <div class="stats-grid">
   <div class="stats-card">
@@ -30,30 +30,52 @@
 </div>
 
 <script id="post-data" type="application/json">
-[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"d":"{{ .Date.Format "2006-01-02" }}","v":"{{ .Params.vendor | default "unknown" }}"}{{ end }}]
+[{{ range $i, $p := $posts }}{{ if $i }},{{ end }}{"d":"{{ .Date.Format "2006-01-02" }}","v":"{{ .Params.vendor | default "unknown" }}","s":"{{ .Params.severity | default "UNKNOWN" }}","src":"{{ delimit (.Params.sources | default (slice "NVD")) "," }}"}{{ end }}]
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 const isDark=!document.body.classList.contains('light');
-const txtColor=isDark?'#94a3b8':'#64748b';
-const gridColor=isDark?'rgba(255,255,255,.06)':'rgba(0,0,0,.06)';
-Chart.defaults.color=txtColor;Chart.defaults.borderColor=gridColor;
+Chart.defaults.color=isDark?'#94a3b8':'#64748b';
+Chart.defaults.borderColor=isDark?'rgba(255,255,255,.06)':'rgba(0,0,0,.06)';
 
-new Chart(document.getElementById('severityChart'),{type:'doughnut',data:{labels:['Critical','High','Medium','Low','Unknown'],datasets:[{data:[{{ $critical }},{{ $high }},{{ $medium }},{{ $low }},{{ $unknown }}],backgroundColor:['#ef4444','#f59e0b','#3b82f6','#22c55e','#6b7280']}]},options:{plugins:{legend:{position:'bottom'}}}});
+const all=JSON.parse(document.getElementById('post-data').textContent);
+let sevChart,venChart,tlChart;
 
-const raw=JSON.parse(document.getElementById('post-data').textContent);
+function render(srcFilter){
+  const data=srcFilter?all.filter(p=>p.src.split(',').includes(srcFilter)):all;
 
-// Vendors
-const vc={};
-raw.forEach(p=>{if(p.v&&p.v!=='unknown'){vc[p.v]=(vc[p.v]||0)+1}});
-const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
-new Chart(document.getElementById('vendorChart'),{type:'bar',data:{labels:sorted.map(s=>s[0]),datasets:[{label:'CVEs',data:sorted.map(s=>s[1]),backgroundColor:'#3b82f6'}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+  // Severity
+  let cr=0,hi=0,me=0,lo=0,un=0;
+  data.forEach(p=>{
+    if(p.s==='CRITICAL')cr++;else if(p.s==='HIGH')hi++;else if(p.s==='MEDIUM')me++;else if(p.s==='LOW')lo++;else un++;
+  });
+  if(sevChart)sevChart.destroy();
+  sevChart=new Chart(document.getElementById('severityChart'),{type:'doughnut',data:{labels:['Critical','High','Medium','Low','Unknown'],datasets:[{data:[cr,hi,me,lo,un],backgroundColor:['#ef4444','#f59e0b','#3b82f6','#22c55e','#6b7280']}]},options:{plugins:{legend:{position:'bottom'}}}});
 
-// Timeline
-const dc={};
-raw.forEach(p=>{dc[p.d]=(dc[p.d]||0)+1});
-const dk=Object.keys(dc).sort(),dv=dk.map(k=>dc[k]);
-new Chart(document.getElementById('timelineChart'),{type:'line',data:{labels:dk,datasets:[{label:'CVEs',data:dv,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:2}]},options:{plugins:{legend:{display:false}}}});
+  // Vendors
+  const vc={};
+  data.forEach(p=>{if(p.v&&p.v!=='unknown')vc[p.v]=(vc[p.v]||0)+1});
+  const sorted=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  if(venChart)venChart.destroy();
+  venChart=new Chart(document.getElementById('vendorChart'),{type:'bar',data:{labels:sorted.map(s=>s[0]),datasets:[{label:'CVEs',data:sorted.map(s=>s[1]),backgroundColor:'#3b82f6'}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+
+  // Timeline
+  const dc={};
+  data.forEach(p=>{dc[p.d]=(dc[p.d]||0)+1});
+  const dk=Object.keys(dc).sort(),dv=dk.map(k=>dc[k]);
+  if(tlChart)tlChart.destroy();
+  tlChart=new Chart(document.getElementById('timelineChart'),{type:'line',data:{labels:dk,datasets:[{label:'CVEs',data:dv,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:2}]},options:{plugins:{legend:{display:false}}}});
+}
+
+document.querySelectorAll('.stats-src').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.stats-src').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.src);
+  });
+});
+
+render('');
 </script>
 {{ end }}
