@@ -1,15 +1,17 @@
 ---
-title: "libpng: Schwachstelle ermöglicht Codeausführung"
-date: 2026-03-26T08:06:21+00:00
+title: "libpng: Mehrere Schwachstellen"
+date: 2026-03-26T10:41:01+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "libpng"
 product: "libpng"
+vendors: ["libpng"]
+products: ["libpng"]
 exploited: false
-update: true
+update: false
 sources: ["CERT-Bund"]
-description: "libpng: Schwachstelle ermöglicht Codeausführung"
+description: "libpng: Mehrere Schwachstellen"
 summary: |
-  Ein entfernter, anonymer Angreifer kann eine Schwachstelle in libpng ausnutzen, um möglicherweise beliebigen Code auszuführen, vertrauliche Informationen offenzulegen oder einen Denial-of-Service-Zustand zu verursachen.
-references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0353"]
+  Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in libpng ausnutzen, um beliebigen Programmcode auszuführen oder einen Denial of Service zu verursachen.
+references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0870"]
 ---

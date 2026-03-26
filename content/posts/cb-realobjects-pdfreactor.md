@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "realobjects"
 product: "pdfreactor"
+vendors: ["realobjects"]
+products: ["pdfreactor"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

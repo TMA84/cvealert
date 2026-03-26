@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "xen"
 product: "xen"
+vendors: ["xen"]
+products: ["xen"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

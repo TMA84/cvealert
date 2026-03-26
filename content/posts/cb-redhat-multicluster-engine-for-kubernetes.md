@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "redhat"
 product: "multicluster"
+vendors: ["redhat"]
+products: ["multicluster"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

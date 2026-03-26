@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "ibm-websphere"
 product: "ibm-websphere"
+vendors: ["ibm-websphere"]
+products: ["ibm-websphere"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

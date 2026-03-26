@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "libssh"
 product: "libssh"
+vendors: ["libssh"]
+products: ["libssh"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

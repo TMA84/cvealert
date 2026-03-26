@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "apache"
 product: "tomcat"
+vendors: ["apache"]
+products: ["tomcat"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

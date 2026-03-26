@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "tibco"
 product: "activematrix"
+vendors: ["tibco"]
+products: ["activematrix"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

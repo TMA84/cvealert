@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "vim"
 product: "netbeans"
+vendors: ["vim"]
+products: ["netbeans"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

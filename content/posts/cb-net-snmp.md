@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "net-snmp"
 product: "net-snmp"
+vendors: ["net-snmp"]
+products: ["net-snmp"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

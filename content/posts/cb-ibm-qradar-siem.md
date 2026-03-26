@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "ibm"
 product: "qradar"
+vendors: ["ibm"]
+products: ["qradar"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "curl"
 product: "curl"
+vendors: ["curl"]
+products: ["curl"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -172,6 +172,8 @@ def fetch_nvd(kev_ids):
             front = (
                 f'---\ntitle: "{cve_id}"\ndate: {date}\n'
                 f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
+                f'vendors: {json.dumps(sorted(vendors) if vendors else [])}\n'
+                f'products: {json.dumps(sorted(products) if products else [])}\n'
                 f'exploited: {str(exploited).lower()}\n'
                 f'sources: {json.dumps(sources)}\n'
                 f'description: "{cve_id} - {severity} vulnerability with CVSS score {cvss}"\n'
@@ -202,9 +204,13 @@ def process_cert_bund(advisories):
         is_update = str(adv.get("is_update", False)).lower()
         vendor = adv.get("vendor", "unknown")
         product = adv.get("product", "unknown")
+        vendor_list = [vendor] if vendor != "unknown" else []
+        product_list = [product] if product != "unknown" else []
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
             f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
+            f'vendors: {json.dumps(vendor_list)}\n'
+            f'products: {json.dumps(product_list)}\n'
             f'exploited: false\nupdate: {is_update}\n'
             f'sources: ["CERT-Bund"]\n'
             f'description: "{title}"\n'

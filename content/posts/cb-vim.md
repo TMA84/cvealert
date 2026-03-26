@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "vim"
 product: "vim"
+vendors: ["vim"]
+products: ["vim"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

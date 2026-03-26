@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "saltstack"
 product: "salt"
+vendors: ["saltstack"]
+products: ["salt"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

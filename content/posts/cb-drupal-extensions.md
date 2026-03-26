@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "drupal"
 product: "extensions"
+vendors: ["drupal"]
+products: ["extensions"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

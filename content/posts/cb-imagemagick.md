@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "imagemagick"
 product: "imagemagick"
+vendors: ["imagemagick"]
+products: ["imagemagick"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

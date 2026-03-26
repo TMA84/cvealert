@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "checkmk"
 product: "checkmk"
+vendors: ["checkmk"]
+products: ["checkmk"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

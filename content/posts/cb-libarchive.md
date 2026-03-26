@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "libarchive"
 product: "libarchive"
+vendors: ["libarchive"]
+products: ["libarchive"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

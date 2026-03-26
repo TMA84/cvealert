@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "asterisk"
 product: "asterisk"
+vendors: ["asterisk"]
+products: ["asterisk"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

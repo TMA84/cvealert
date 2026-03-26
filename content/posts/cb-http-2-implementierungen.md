@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "implementierungen"
 product: "implementierungen"
+vendors: ["implementierungen"]
+products: ["implementierungen"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

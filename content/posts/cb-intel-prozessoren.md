@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "intel"
 product: "prozessoren"
+vendors: ["intel"]
+products: ["prozessoren"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

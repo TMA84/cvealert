@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "red-hat"
 product: "enterprise"
+vendors: ["red-hat"]
+products: ["enterprise"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

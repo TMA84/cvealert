@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"
 product: "openshift"
+vendors: ["red-hat"]
+products: ["openshift"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

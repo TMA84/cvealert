@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "node.js"
 product: "node.js"
+vendors: ["node.js"]
+products: ["node.js"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

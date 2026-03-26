@@ -19,6 +19,12 @@ enableRobotsTXT = true
 
 [outputs]
   home = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[taxonomies]
+  vendor = "vendors"
+  product = "products"
 
 [sitemap]
   changefreq = "daily"

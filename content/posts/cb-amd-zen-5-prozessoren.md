@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "amd"
 product: "“zen"
+vendors: ["amd"]
+products: ["\u201czen"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

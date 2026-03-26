@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "mozilla"
 product: "firefox"
+vendors: ["mozilla"]
+products: ["firefox"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

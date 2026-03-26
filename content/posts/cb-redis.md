@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "redis"
 product: "redis"
+vendors: ["redis"]
+products: ["redis"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

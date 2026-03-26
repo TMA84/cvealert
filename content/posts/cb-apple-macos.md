@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "apple-macos"
 product: "apple-macos"
+vendors: ["apple-macos"]
+products: ["apple-macos"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

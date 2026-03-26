@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "nats"
 product: "nats"
+vendors: ["nats"]
+products: ["nats"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

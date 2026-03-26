@@ -5,6 +5,8 @@ cvss: 2.5
 severity: "LOW"
 vendor: "apache"
 product: "log4j"
+vendors: ["apache"]
+products: ["log4j"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

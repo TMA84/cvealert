@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "expat"
 product: "expat"
+vendors: ["expat"]
+products: ["expat"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

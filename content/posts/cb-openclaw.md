@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "openclaw"
 product: "openclaw"
+vendors: ["openclaw"]
+products: ["openclaw"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

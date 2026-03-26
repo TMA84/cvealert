@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "ibm-websphere"
 product: "liberty"
+vendors: ["ibm-websphere"]
+products: ["liberty"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

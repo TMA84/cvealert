@@ -1,10 +1,12 @@
 ---
 title: "Red Hat Enterprise Linux: Schwachstelle ermöglicht Privilegieneskalation und Offenlegung von Informationen"
-date: 2026-03-24T11:20:51+00:00
+date: 2026-03-26T12:20:54+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"
 product: "enterprise"
+vendors: ["red-hat"]
+products: ["enterprise"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

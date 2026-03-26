@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "amd"
 product: "prozessoren"
+vendors: ["amd"]
+products: ["prozessoren"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

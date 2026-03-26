@@ -5,6 +5,8 @@ cvss: 2.5
 severity: "LOW"
 vendor: "util-linux"
 product: "util-linux"
+vendors: ["util-linux"]
+products: ["util-linux"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

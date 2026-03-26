@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "dpkg"
 product: "dpkg"
+vendors: ["dpkg"]
+products: ["dpkg"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

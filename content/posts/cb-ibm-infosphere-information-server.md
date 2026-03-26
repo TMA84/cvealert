@@ -1,15 +1,17 @@
 ---
-title: "IBM InfoSphere Information Server: Mehrere Schwachstellen"
-date: 2026-03-26T07:56:04+00:00
-cvss: 7.5
-severity: "HIGH"
+title: "IBM InfoSphere Information Server: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen"
+date: 2026-03-26T10:15:59+00:00
+cvss: 5.0
+severity: "MEDIUM"
 vendor: "ibm"
 product: "infosphere"
+vendors: ["ibm"]
+products: ["infosphere"]
 exploited: false
-update: true
+update: false
 sources: ["CERT-Bund"]
-description: "IBM InfoSphere Information Server: Mehrere Schwachstellen"
+description: "IBM InfoSphere Information Server: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen"
 summary: |
-  Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in IBM InfoSphere Information Server ausnutzen, um Sicherheitsmaßnahmen zu umgehen, einen Denial of Service zu verursachen, einen Cross Site Scripting und CSRF Angriff durchzuführen, Informationen offenzulegen und Daten zu manipulieren.
-references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0851"]
+  Ein entfernter, anonymer Angreifer kann eine Schwachstelle in IBM InfoSphere Information Server ausnutzen, um Sicherheitsvorkehrungen zu umgehen.
+references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0867"]
 ---

@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "dell"
 product: "secure"
+vendors: ["dell"]
+products: ["secure"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

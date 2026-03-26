@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "apple-ios"
 product: "apple-ios"
+vendors: ["apple-ios"]
+products: ["apple-ios"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

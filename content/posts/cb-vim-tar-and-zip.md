@@ -5,6 +5,8 @@ cvss: 2.5
 severity: "LOW"
 vendor: "vim"
 product: "tar"
+vendors: ["vim"]
+products: ["tar"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

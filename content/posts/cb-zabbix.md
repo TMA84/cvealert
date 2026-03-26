@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "zabbix"
 product: "zabbix"
+vendors: ["zabbix"]
+products: ["zabbix"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

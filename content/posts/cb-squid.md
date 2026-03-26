@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "squid"
 product: "squid"
+vendors: ["squid"]
+products: ["squid"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

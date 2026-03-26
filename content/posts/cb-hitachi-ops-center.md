@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "hitachi"
 product: "ops"
+vendors: ["hitachi"]
+products: ["ops"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

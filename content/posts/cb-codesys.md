@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "codesys"
 product: "codesys"
+vendors: ["codesys"]
+products: ["codesys"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

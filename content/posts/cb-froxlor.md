@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "froxlor"
 product: "froxlor"
+vendors: ["froxlor"]
+products: ["froxlor"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

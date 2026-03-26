@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "red-hat"
 product: "hub"
+vendors: ["red-hat"]
+products: ["hub"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

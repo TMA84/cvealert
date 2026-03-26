@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "postgresql"
 product: "postgresql"
+vendors: ["postgresql"]
+products: ["postgresql"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

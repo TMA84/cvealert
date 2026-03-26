@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "oracle"
 product: "mysql"
+vendors: ["oracle"]
+products: ["mysql"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

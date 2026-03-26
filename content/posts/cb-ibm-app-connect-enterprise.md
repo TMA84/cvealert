@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "ibm"
 product: "connect"
+vendors: ["ibm"]
+products: ["connect"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "cpython"
 product: "cpython"
+vendors: ["cpython"]
+products: ["cpython"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

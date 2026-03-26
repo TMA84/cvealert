@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "apple"
 product: "xcode"
+vendors: ["apple"]
+products: ["xcode"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

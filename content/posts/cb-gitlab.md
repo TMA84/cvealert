@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "gitlab"
 product: "gitlab"
+vendors: ["gitlab"]
+products: ["gitlab"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

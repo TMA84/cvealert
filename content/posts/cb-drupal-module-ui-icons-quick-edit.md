@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "drupal"
 product: "icons"
+vendors: ["drupal"]
+products: ["icons"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

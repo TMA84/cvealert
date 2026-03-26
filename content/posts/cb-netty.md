@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "netty"
 product: "netty"
+vendors: ["netty"]
+products: ["netty"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

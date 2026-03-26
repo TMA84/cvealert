@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "drupal"
 product: "login"
+vendors: ["drupal"]
+products: ["login"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -1,10 +1,12 @@
 ---
 title: "Mozilla Firefox und Mozilla Thunderbird: Mehrere Schwachstellen"
-date: 2026-03-26T07:56:06+00:00
+date: 2026-03-26T12:20:56+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "mozilla"
 product: "firefox"
+vendors: ["mozilla"]
+products: ["firefox"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

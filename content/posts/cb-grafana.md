@@ -5,6 +5,8 @@ cvss: 2.5
 severity: "LOW"
 vendor: "grafana"
 product: "grafana"
+vendors: ["grafana"]
+products: ["grafana"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

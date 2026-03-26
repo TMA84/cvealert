@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "apache"
 product: "apache"
+vendors: ["apache"]
+products: ["apache"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

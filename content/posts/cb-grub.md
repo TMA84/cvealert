@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "grub"
 product: "grub"
+vendors: ["grub"]
+products: ["grub"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "golang"
 product: "golang"
+vendors: ["golang"]
+products: ["golang"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]

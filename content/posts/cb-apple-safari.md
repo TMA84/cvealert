@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "apple"
 product: "safari"
+vendors: ["apple"]
+products: ["safari"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

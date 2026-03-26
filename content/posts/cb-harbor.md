@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "harbor"
 product: "harbor"
+vendors: ["harbor"]
+products: ["harbor"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

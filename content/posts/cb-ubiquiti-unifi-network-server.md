@@ -5,6 +5,8 @@ cvss: 7.5
 severity: "HIGH"
 vendor: "ubiquiti"
 product: "unifi"
+vendors: ["ubiquiti"]
+products: ["unifi"]
 exploited: false
 update: false
 sources: ["CERT-Bund"]

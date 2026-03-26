@@ -1,15 +1,17 @@
 ---
-title: "docker: Schwachstelle ermöglicht Privilegieneskalation"
-date: 2026-03-24T10:21:55+00:00
+title: "docker: Mehrere Schwachstellen"
+date: 2026-03-26T10:51:02+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "docker"
 product: "docker"
+vendors: ["docker"]
+products: ["docker"]
 exploited: false
-update: true
+update: false
 sources: ["CERT-Bund"]
-description: "docker: Schwachstelle ermöglicht Privilegieneskalation"
+description: "docker: Mehrere Schwachstellen"
 summary: |
-  Ein entfernter, authentisierter Angreifer kann eine Schwachstelle in docker ausnutzen, um seine Privilegien zu erhöhen.
-references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2024-1703"]
+  Ein lokaler Angreifer kann mehrere Schwachstellen in docker ausnutzen, um Sicherheitsvorkehrungen zu umgehen und Informationen offenzulegen.
+references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0873"]
 ---

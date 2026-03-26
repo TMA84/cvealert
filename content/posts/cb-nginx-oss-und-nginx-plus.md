@@ -5,6 +5,8 @@ cvss: 5.0
 severity: "MEDIUM"
 vendor: "nginx"
 product: "oss"
+vendors: ["nginx"]
+products: ["oss"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]
