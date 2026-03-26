@@ -1,14 +1,14 @@
 ---
-title: "NATS Server: Mehrere Schwachstellen"
-date: 2026-03-25T12:25:50+00:00
-cvss: 7.5
-severity: "HIGH"
+title: "NATS Server: Mehrere Schwachstellen ermöglichen Denial of Service"
+date: 2026-03-26T07:56:04+00:00
+cvss: 5.0
+severity: "MEDIUM"
 vendor: "nats-server"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
-description: "NATS Server: Mehrere Schwachstellen"
+description: "NATS Server: Mehrere Schwachstellen ermöglichen Denial of Service"
 summary: |
-  Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in NATS Server ausnutzen, um Informationen offenzulegen oder zu manipulieren, einen Denial-of-Service zu verursachen und Sicherheitsmechanismen zu umgehen.
-references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0858"]
+  Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in NATS Server ausnutzen, um einen Denial of Service Angriff durchzuführen.
+references: ["https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0641"]
 ---

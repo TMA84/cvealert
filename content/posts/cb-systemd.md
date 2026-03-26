@@ -1,6 +1,6 @@
 ---
 title: "systemd: Mehrere Schwachstellen"
-date: 2026-03-25T09:51:23+00:00
+date: 2026-03-26T07:56:05+00:00
 cvss: 5.0
 severity: "MEDIUM"
 vendor: "systemd"

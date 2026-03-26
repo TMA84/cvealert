@@ -1,11 +1,11 @@
 ---
 title: "Hitachi Ops Center: Mehrere Schwachstellen"
-date: 2026-03-25T11:50:50+00:00
+date: 2026-03-26T08:00:55+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "hitachi-ops-center"
+vendor: "hitachi-ops"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
 description: "Hitachi Ops Center: Mehrere Schwachstellen"
 summary: |

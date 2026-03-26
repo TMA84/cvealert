@@ -3,7 +3,7 @@ title: "VMware Tanzu Spring Cloud: Schwachstelle ermöglicht Offenlegung von Inf
 date: 2026-03-24T11:35:59+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "vmware-tanzu-spring-cloud"
+vendor: "vmware-tanzu"
 exploited: false
 update: false
 sources: ["CERT-Bund"]

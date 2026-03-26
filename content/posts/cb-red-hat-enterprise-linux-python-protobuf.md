@@ -1,9 +1,9 @@
 ---
 title: "Red Hat Enterprise Linux (Python Protobuf): Schwachstelle ermöglicht Denial of Service"
-date: 2026-03-25T09:51:20+00:00
+date: 2026-03-26T08:06:48+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "red-hat-enterprise-linux-(python-protobuf)"
+vendor: "red-hat"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

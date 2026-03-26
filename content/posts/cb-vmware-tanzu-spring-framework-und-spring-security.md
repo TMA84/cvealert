@@ -3,7 +3,7 @@ title: "VMware Tanzu Spring Framework und Spring Security: Mehrere Schwachstelle
 date: 2026-03-24T10:36:02+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "vmware-tanzu-spring-framework-und-spring-security"
+vendor: "vmware-tanzu"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

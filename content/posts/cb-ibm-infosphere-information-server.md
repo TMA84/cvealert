@@ -1,11 +1,11 @@
 ---
 title: "IBM InfoSphere Information Server: Mehrere Schwachstellen"
-date: 2026-03-25T12:15:51+00:00
+date: 2026-03-26T07:56:04+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "ibm-infosphere-information-server"
+vendor: "ibm-infosphere"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
 description: "IBM InfoSphere Information Server: Mehrere Schwachstellen"
 summary: |

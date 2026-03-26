@@ -1,11 +1,11 @@
 ---
 title: "Squid: Mehrere Schwachstellen ermöglichen Denial of Service"
-date: 2026-03-25T12:21:01+00:00
+date: 2026-03-26T08:00:49+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "squid"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
 description: "Squid: Mehrere Schwachstellen ermöglichen Denial of Service"
 summary: |

@@ -1,11 +1,11 @@
 ---
 title: "NGINX und NGINX Plus: Mehrere Schwachstellen"
-date: 2026-03-25T12:35:53+00:00
+date: 2026-03-26T07:56:05+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "nginx-und-nginx-plus"
+vendor: "nginx"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
 description: "NGINX und NGINX Plus: Mehrere Schwachstellen"
 summary: |

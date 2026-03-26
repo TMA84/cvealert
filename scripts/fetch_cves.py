@@ -62,10 +62,20 @@ def fetch_cert_bund():
                     break
             clean_title = clean_title.strip().strip("-").strip()
 
-            # Extract vendor from title (text before first colon)
+            # Extract vendor from title (text before first colon, simplified)
             vendor = "unknown"
             if ":" in clean_title:
-                vendor = clean_title.split(":")[0].strip().lower().replace(" ", "-")
+                raw_vendor = clean_title.split(":")[0].strip()
+                # Take first meaningful word(s), drop "und", version info etc.
+                parts = raw_vendor.split()
+                short = []
+                for p in parts:
+                    if p.lower() in ("und", "for", "mit", "-"):
+                        break
+                    short.append(p)
+                    if len(short) >= 2:
+                        break
+                vendor = "-".join(short).lower().rstrip(",-") if short else "unknown"
 
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")

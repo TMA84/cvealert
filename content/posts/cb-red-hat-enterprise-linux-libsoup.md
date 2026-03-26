@@ -3,7 +3,7 @@ title: "Red Hat Enterprise Linux (libsoup): Schwachstelle ermöglicht Umgehen vo
 date: 2026-03-25T10:23:26+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "red-hat-enterprise-linux-(libsoup)"
+vendor: "red-hat"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

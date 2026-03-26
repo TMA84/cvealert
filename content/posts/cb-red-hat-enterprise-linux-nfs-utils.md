@@ -3,7 +3,7 @@ title: "Red Hat Enterprise Linux (nfs-utils): Schwachstelle ermöglicht Offenleg
 date: 2026-03-25T09:50:55+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "red-hat-enterprise-linux-(nfs-utils)"
+vendor: "red-hat"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

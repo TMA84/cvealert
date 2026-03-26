@@ -3,7 +3,7 @@ title: "Red Hat JBoss Enterprise Application Platform (Undertow): Mehrere Schwac
 date: 2026-03-25T10:23:05+00:00
 cvss: 7.5
 severity: "HIGH"
-vendor: "red-hat-jboss-enterprise-application-platform-(undertow)"
+vendor: "red-hat"
 exploited: false
 update: true
 sources: ["CERT-Bund"]

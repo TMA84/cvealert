@@ -1,11 +1,11 @@
 ---
 title: "IBM WebSphere Application Server Liberty: Mehrere Schwachstellen"
-date: 2026-03-25T11:50:50+00:00
+date: 2026-03-26T08:00:52+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "ibm-websphere-application-server-liberty"
+vendor: "ibm-websphere"
 exploited: false
-update: false
+update: true
 sources: ["CERT-Bund"]
 description: "IBM WebSphere Application Server Liberty: Mehrere Schwachstellen"
 summary: |

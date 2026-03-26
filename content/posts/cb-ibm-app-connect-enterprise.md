@@ -3,7 +3,7 @@ title: "IBM App Connect Enterprise: Schwachstelle ermöglicht Denial of Service"
 date: 2026-03-25T10:23:59+00:00
 cvss: 5.0
 severity: "MEDIUM"
-vendor: "ibm-app-connect-enterprise"
+vendor: "ibm-app"
 exploited: false
 update: true
 sources: ["CERT-Bund"]
