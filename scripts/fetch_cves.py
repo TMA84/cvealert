@@ -94,6 +94,10 @@ def fetch_cert_bund():
                         vendor = clean_parts[0].lower()
                         product = vendor
 
+            # Sanitize vendor/product for safe YAML output
+            vendor = vendor.strip().strip('"').strip("'")
+            product = product.strip().strip('"').strip("'")
+
             try:
                 dt = datetime.strptime(pub[:25], "%a, %d %b %Y %H:%M:%S")
                 date_str = dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
@@ -111,6 +115,15 @@ def fetch_cert_bund():
 
 def safe_yaml(text):
     return text.replace("{{", "{ {").replace("}}", "} }").replace("\n", " ").replace("\r", "")
+
+
+def safe_yaml_value(text):
+    """Sanitize a string for use as a YAML quoted value."""
+    # Remove surrounding/embedded quotes and normalize
+    text = text.strip().strip('"').strip("'")
+    # Escape internal double quotes
+    text = text.replace('"', '\\"')
+    return text
 
 
 def write_post(path, frontmatter):
@@ -164,6 +177,8 @@ def fetch_nvd(kev_ids):
                             products.add(parts[4])
             vendor = ", ".join(sorted(vendors)) if vendors else "unknown"
             product = ", ".join(sorted(products)) if products else "unknown"
+            vendor_safe = safe_yaml_value(vendor)
+            product_safe = safe_yaml_value(product)
             date = cve.get("published", datetime.now(timezone.utc).isoformat())
             exploited = cve_id in kev_ids
             sources = ["NVD"]
@@ -171,7 +186,7 @@ def fetch_nvd(kev_ids):
                 sources.append("CISA KEV")
             front = (
                 f'---\ntitle: "{cve_id}"\ndate: {date}\n'
-                f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
+                f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor_safe}"\nproduct: "{product_safe}"\n'
                 f'vendors: {json.dumps(sorted(vendors) if vendors else [])}\n'
                 f'products: {json.dumps(sorted(products) if products else [])}\n'
                 f'exploited: {str(exploited).lower()}\n'
@@ -204,11 +219,13 @@ def process_cert_bund(advisories):
         is_update = str(adv.get("is_update", False)).lower()
         vendor = adv.get("vendor", "unknown")
         product = adv.get("product", "unknown")
-        vendor_list = [vendor] if vendor != "unknown" else []
-        product_list = [product] if product != "unknown" else []
+        vendor_safe = safe_yaml_value(vendor)
+        product_safe = safe_yaml_value(product)
+        vendor_list = [vendor_safe] if vendor != "unknown" else []
+        product_list = [product_safe] if product != "unknown" else []
         front = (
             f'---\ntitle: "{title}"\ndate: {adv["date"]}\n'
-            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor}"\nproduct: "{product}"\n'
+            f'cvss: {cvss}\nseverity: "{severity}"\nvendor: "{vendor_safe}"\nproduct: "{product_safe}"\n'
             f'vendors: {json.dumps(vendor_list)}\n'
             f'products: {json.dumps(product_list)}\n'
             f'exploited: false\nupdate: {is_update}\n'
