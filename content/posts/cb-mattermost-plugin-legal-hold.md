@@ -4,9 +4,9 @@ date: 2026-04-08T09:34:10+00:00
 cvss: 7.5
 severity: "HIGH"
 vendor: "mattermost-plugin"
-product: ""legal"
+product: "legal-hold"
 vendors: ["mattermost-plugin"]
-products: ["\"legal"]
+products: ["legal-hold"]
 exploited: false
 update: true
 sources: ["CERT-Bund"]
