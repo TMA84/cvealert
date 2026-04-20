@@ -9,10 +9,20 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "content", "posts")
 UA = {"User-Agent": "cve-blog/1.0"}
 
 
-def http_get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+def http_get(url, timeout=30, retries=3):
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.read()
+        except Exception as e:
+            if attempt < retries - 1:
+                wait = 5 * (attempt + 1)
+                print(f"Retry {attempt + 1}/{retries} for {url[:80]}... ({e})")
+                import time
+                time.sleep(wait)
+            else:
+                raise
 
 
 def fetch_kev():
@@ -72,7 +82,7 @@ def fetch_cert_bund():
                 for p in parts:
                     if p.lower() in ("und", "for", "mit", "-"):
                         break
-                    clean_parts.append(p.rstrip(",-").strip("().").strip())
+                    clean_parts.append(p.rstrip(",-").strip("().\"'").strip())
                 clean_parts = [c for c in clean_parts if c and len(c) > 2 and not any(x in c for x in "/\\") and c.lower() not in ("api-funktionen", "app", "developer", "server", "application", "module", "plugin")]
                 # Known multi-word vendors
                 multi = {"red hat", "ibm websphere", "apple ios", "apple macos", "net snmp", "vmware tanzu"}
@@ -145,7 +155,7 @@ def fetch_nvd(kev_ids):
             f"?pubStartDate={start.strftime(fmt)}&pubEndDate={end.strftime(fmt)}"
             f"&resultsPerPage=200&startIndex={start_idx}"
         )
-        data = json.loads(http_get(API + params))
+        data = json.loads(http_get(API + params, timeout=60))
         vulns = data.get("vulnerabilities", [])
         if not vulns:
             break
@@ -173,8 +183,8 @@ def fetch_nvd(kev_ids):
                     for match in node.get("cpeMatch", []):
                         parts = match.get("criteria", "").split(":")
                         if len(parts) >= 5:
-                            vendors.add(parts[3])
-                            products.add(parts[4])
+                            vendors.add(parts[3].replace('"', '').strip())
+                            products.add(parts[4].replace('"', '').strip())
             vendor = ", ".join(sorted(vendors)) if vendors else "unknown"
             product = ", ".join(sorted(products)) if products else "unknown"
             vendor_safe = safe_yaml_value(vendor)
